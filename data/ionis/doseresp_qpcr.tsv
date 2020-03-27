@@ -1,0 +1,67 @@
+region	treatment	dose	mrna
+thoracic cord	saline	0	0.89
+thoracic cord	saline	0	1.12
+thoracic cord	saline	0	0.99
+thoracic cord	active ASO 1	30	0.70
+thoracic cord	active ASO 1	30	0.62
+thoracic cord	active ASO 1	30	0.82
+thoracic cord	active ASO 1	100	0.57
+thoracic cord	active ASO 1	100	0.60
+thoracic cord	active ASO 1	100	0.59
+thoracic cord	active ASO 1	300	0.47
+thoracic cord	active ASO 1	300	0.39
+thoracic cord	active ASO 1	300	0.32
+thoracic cord	active ASO 1	500	0.51
+thoracic cord	active ASO 1	500	0.54
+thoracic cord	active ASO 1	500	0.46
+thoracic cord	active ASO 1	700	0.47
+thoracic cord	active ASO 1	700	0.53
+thoracic cord	active ASO 1	700	0.44
+thoracic cord	active ASO 2	30	0.96
+thoracic cord	active ASO 2	30	0.85
+thoracic cord	active ASO 2	30	0.68
+thoracic cord	active ASO 2	100	0.48
+thoracic cord	active ASO 2	100	0.51
+thoracic cord	active ASO 2	100	0.28
+thoracic cord	active ASO 2	300	0.56
+thoracic cord	active ASO 2	300	0.45
+thoracic cord	active ASO 2	300	0.40
+thoracic cord	active ASO 2	500	0.37
+thoracic cord	active ASO 2	500	0.41
+thoracic cord	active ASO 2	500	0.35
+thoracic cord	active ASO 2	700	0.34
+thoracic cord	active ASO 2	700	0.25
+thoracic cord	active ASO 2	700	0.30
+cortex	saline	0	1.04
+cortex	saline	0	0.96
+cortex	saline	0	1.00
+cortex	active ASO 1	30	0.70
+cortex	active ASO 1	30	0.86
+cortex	active ASO 1	30	0.82
+cortex	active ASO 1	100	0.68
+cortex	active ASO 1	100	0.72
+cortex	active ASO 1	100	0.61
+cortex	active ASO 1	300	0.60
+cortex	active ASO 1	300	0.48
+cortex	active ASO 1	300	0.43
+cortex	active ASO 1	500	0.36
+cortex	active ASO 1	500	0.41
+cortex	active ASO 1	500	0.44
+cortex	active ASO 1	700	0.44
+cortex	active ASO 1	700	0.34
+cortex	active ASO 1	700	0.39
+cortex	active ASO 2	30	0.75
+cortex	active ASO 2	30	0.90
+cortex	active ASO 2	30	0.84
+cortex	active ASO 2	100	0.58
+cortex	active ASO 2	100	0.60
+cortex	active ASO 2	100	0.67
+cortex	active ASO 2	300	0.46
+cortex	active ASO 2	300	0.78
+cortex	active ASO 2	300	0.50
+cortex	active ASO 2	500	0.38
+cortex	active ASO 2	500	0.44
+cortex	active ASO 2	500	0.46
+cortex	active ASO 2	700	0.33
+cortex	active ASO 2	700	0.31
+cortex	active ASO 2	700	0.36

@@ -1,0 +1,6 @@
+strain	dpi_treatment	timepoint	saline_itime	saline_n	active_itime	active_n	delta	proportion_outlive	dpi_outlive	delta_outlive
+RML	123	75%	164±7	6	189±54	8	+15%	3/8	251±17	+53%
+22L	127	78%	164±5	8	235±43	7	+44%	6/7	251±5	+54%
+Fukuoka-1	128	77%	166±14	8	255±4	3	+54%	3/3	255±4	+54%
+ME7	129	81%	160±11	8	179±52	8	+12%	3/8	234±45	+46%
+OSU	122	77%	159±6	8	204±60	7	+28%	4/7	250±17	+57%

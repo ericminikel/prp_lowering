@@ -1,0 +1,145 @@
+region	days	treatment	mrna
+cortex	1	saline	0.917
+cortex	4	saline	0.838
+cortex	7	saline	0.89
+cortex	1	saline	1.016
+cortex	4	saline	0.957
+cortex	7	saline	0.987
+cortex	1	saline	0.955
+cortex	4	saline	1.059
+cortex	7	saline	1.018
+cortex	1	saline	1.111
+cortex	4	saline	1.146
+cortex	7	saline	1.105
+cortex	1	active ASO 1	0.974
+cortex	4	active ASO 1	0.518
+cortex	7	active ASO 1	0.769
+cortex	1	active ASO 1	0.868
+cortex	4	active ASO 1	0.518
+cortex	7	active ASO 1	0.546
+cortex	1	active ASO 1	0.684
+cortex	4	active ASO 1	0.631
+cortex	7	active ASO 1	0.446
+cortex	1	active ASO 1	0.923
+cortex	4	active ASO 1	0.609
+cortex	7	active ASO 1	0.698
+cortex	1	active ASO 6	0.665
+cortex	4	active ASO 6	0.54
+cortex	7	active ASO 6	0.319
+cortex	1	active ASO 6	0.346
+cortex	4	active ASO 6	0.348
+cortex	7	active ASO 6	0.28
+cortex	1	active ASO 6	0.625
+cortex	4	active ASO 6	0.391
+cortex	7	active ASO 6	0.35
+cortex	1	active ASO 6	0.365
+cortex	4	active ASO 6	0.29
+cortex	7	active ASO 6	0.278
+thoracic cord	1	saline	0.954
+thoracic cord	4	saline	0.953
+thoracic cord	7	saline	0.881
+thoracic cord	1	saline	1.051
+thoracic cord	4	saline	0.986
+thoracic cord	7	saline	1.018
+thoracic cord	1	saline	0.987
+thoracic cord	4	saline	1.063
+thoracic cord	7	saline	1.026
+thoracic cord	1	saline	1.009
+thoracic cord	4	saline	0.999
+thoracic cord	7	saline	1.075
+thoracic cord	1	active ASO 1	0.673
+thoracic cord	4	active ASO 1	0.491
+thoracic cord	7	active ASO 1	0.483
+thoracic cord	1	active ASO 1	0.674
+thoracic cord	4	active ASO 1	0.494
+thoracic cord	7	active ASO 1	0.515
+thoracic cord	1	active ASO 1	0.706
+thoracic cord	4	active ASO 1	0.509
+thoracic cord	7	active ASO 1	0.501
+thoracic cord	1	active ASO 1	0.747
+thoracic cord	4	active ASO 1	0.508
+thoracic cord	7	active ASO 1	0.447
+thoracic cord	1	active ASO 6	0.683
+thoracic cord	4	active ASO 6	0.425
+thoracic cord	7	active ASO 6	0.437
+thoracic cord	1	active ASO 6	0.671
+thoracic cord	4	active ASO 6	0.444
+thoracic cord	7	active ASO 6	0.474
+thoracic cord	1	active ASO 6	0.625
+thoracic cord	4	active ASO 6	0.429
+thoracic cord	7	active ASO 6	0.296
+thoracic cord	1	active ASO 6	0.612
+thoracic cord	4	active ASO 6	0.48
+thoracic cord	7	active ASO 6	0.389
+thalamus	1	saline	0.946
+thalamus	4	saline	0.97
+thalamus	7	saline	0.93
+thalamus	1	saline	1.079
+thalamus	4	saline	0.916
+thalamus	7	saline	0.996
+thalamus	1	saline	1.014
+thalamus	4	saline	1.064
+thalamus	7	saline	1.035
+thalamus	1	saline	0.961
+thalamus	4	saline	1.05
+thalamus	7	saline	1.04
+thalamus	1	active ASO 1	0.802
+thalamus	4	active ASO 1	0.597
+thalamus	7	active ASO 1	0.579
+thalamus	1	active ASO 1	0.792
+thalamus	4	active ASO 1	0.499
+thalamus	7	active ASO 1	0.613
+thalamus	1	active ASO 1	0.66
+thalamus	4	active ASO 1	0.566
+thalamus	7	active ASO 1	0.464
+thalamus	1	active ASO 1	0.788
+thalamus	4	active ASO 1	0.522
+thalamus	7	active ASO 1	0.581
+thalamus	1	active ASO 6	0.465
+thalamus	4	active ASO 6	0.434
+thalamus	7	active ASO 6	0.477
+thalamus	1	active ASO 6	0.504
+thalamus	4	active ASO 6	0.442
+thalamus	7	active ASO 6	0.44
+thalamus	1	active ASO 6	0.62
+thalamus	4	active ASO 6	0.436
+thalamus	7	active ASO 6	0.475
+thalamus	1	active ASO 6	0.512
+thalamus	4	active ASO 6	0.395
+thalamus	7	active ASO 6	0.451
+brainstem	1	saline	0.948
+brainstem	4	saline	0.951
+brainstem	7	saline	1.064
+brainstem	1	saline	1.063
+brainstem	4	saline	1.031
+brainstem	7	saline	0.958
+brainstem	1	saline	1.016
+brainstem	4	saline	1.035
+brainstem	7	saline	1.058
+brainstem	1	saline	0.973
+brainstem	4	saline	0.984
+brainstem	7	saline	0.92
+brainstem	1	active ASO 1	0.829
+brainstem	4	active ASO 1	0.612
+brainstem	7	active ASO 1	0.45
+brainstem	1	active ASO 1	0.81
+brainstem	4	active ASO 1	0.612
+brainstem	7	active ASO 1	0.513
+brainstem	1	active ASO 1	0.794
+brainstem	4	active ASO 1	0.586
+brainstem	7	active ASO 1	0.473
+brainstem	1	active ASO 1	0.861
+brainstem	4	active ASO 1	0.616
+brainstem	7	active ASO 1	0.512
+brainstem	1	active ASO 6	0.8
+brainstem	4	active ASO 6	0.577
+brainstem	7	active ASO 6	0.387
+brainstem	1	active ASO 6	0.79
+brainstem	4	active ASO 6	0.524
+brainstem	7	active ASO 6	0.428
+brainstem	1	active ASO 6	0.753
+brainstem	4	active ASO 6	0.516
+brainstem	7	active ASO 6	0.434
+brainstem	1	active ASO 6	0.742
+brainstem	4	active ASO 6	0.496
+brainstem	7	active ASO 6	0.393

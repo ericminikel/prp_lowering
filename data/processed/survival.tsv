@@ -1,0 +1,740 @@
+animal	dpi	endpoint	endpoint_comments	acm	acm_comments	tissues
+DA1	154	TRUE	five symptoms	TRUE	counted in all-cause	L/R
+DA2	157	TRUE	five symptoms	TRUE	counted in all-cause	L/R
+DA3	152	TRUE	five symptoms	TRUE	counted in all-cause	L/R
+DA4	157	TRUE	five symptoms	TRUE	counted in all-cause	L/R
+DB1	173	TRUE	five symptoms	TRUE	counted in all-cause	none
+DB2	173	TRUE	five symptoms	TRUE	counted in all-cause	L/R
+DB3	173	TRUE	five symptoms	TRUE	counted in all-cause	L/R
+DB4	173	TRUE	five symptoms	TRUE	counted in all-cause	L/R
+DC1	115	FALSE	found dead	TRUE	counted in all-cause	none
+DC2	88	FALSE	surgical complications	TRUE	counted in all-cause	none
+DC3	189	TRUE	five symptoms	TRUE	counted in all-cause	none
+DC4	189	TRUE	five symptoms	TRUE	counted in all-cause	none
+DD1	210	TRUE	five symptoms	TRUE	counted in all-cause	L/R
+DD2	207	TRUE	five symptoms	TRUE	counted in all-cause	none
+DD3	210	TRUE	five symptoms	TRUE	counted in all-cause	L/R
+DD4	210	TRUE	five symptoms	TRUE	counted in all-cause	none
+DE1	214	TRUE	five symptoms	TRUE	counted in all-cause	L/R
+DE2	223	TRUE	five symptoms	TRUE	counted in all-cause	none
+DE3	214	TRUE	five symptoms	TRUE	counted in all-cause	L/R
+DE4	223	TRUE	five symptoms	TRUE	counted in all-cause	none
+DF1	152	TRUE	five symptoms	TRUE	counted in all-cause	L/R
+DF2	140	TRUE	five symptoms	TRUE	counted in all-cause	L/R
+DF3	152	TRUE	five symptoms	TRUE	counted in all-cause	L/R
+DF4	152	TRUE	five symptoms	TRUE	counted in all-cause	L/R
+DG1	182	TRUE	five symptoms	TRUE	counted in all-cause	none
+DG2	182	TRUE	five symptoms	TRUE	counted in all-cause	none
+DG3	159	TRUE	five symptoms	TRUE	counted in all-cause	L/R
+DG4	6	FALSE	found dead	TRUE	counted in all-cause	
+DH1	202	TRUE	five symptoms	TRUE	counted in all-cause	L/R
+DH2	203	TRUE	five symptoms	TRUE	counted in all-cause	L/R
+DH3	189	TRUE	five symptoms	TRUE	counted in all-cause	none
+DH4	192	TRUE	five symptoms	TRUE	counted in all-cause	none
+DI1	0	FALSE	surgical complications	FALSE	within one day post-surgery	
+DI2	8	FALSE	found dead	TRUE	counted in all-cause	
+DI3	207	TRUE	five symptoms	TRUE	counted in all-cause	none
+DI4	199	TRUE	five symptoms	TRUE	counted in all-cause	L/R
+DJ1	223	TRUE	five symptoms	TRUE	counted in all-cause	L/R
+DJ2	124	FALSE	weight loss	TRUE	counted in all-cause	L/R
+DJ3	257	TRUE	five symptoms	TRUE	counted in all-cause	none
+DJ4	231	TRUE	five symptoms	TRUE	counted in all-cause	none
+GA1	231	TRUE	five symptoms	TRUE	counted in all-cause	none
+GA2	10	FALSE	found dead	TRUE	counted in all-cause	none
+GA3	403	TRUE	found dead	TRUE	counted in all-cause	none
+GB1	409	TRUE	weight loss	TRUE	counted in all-cause	none
+GB2	314	TRUE	found dead	TRUE	counted in all-cause	none
+GB3	356	TRUE	secondary complications	TRUE	counted in all-cause	none
+GB4	348	TRUE	weight loss	TRUE	counted in all-cause	L/R
+GB5	348	TRUE	weight loss	TRUE	counted in all-cause	L/R
+GC1	278	TRUE	weight loss	TRUE	counted in all-cause	none
+GC2	249	TRUE	found dead	TRUE	counted in all-cause	none
+GC3	278	TRUE	weight loss	TRUE	counted in all-cause	none
+GC4	283	TRUE	weight loss	TRUE	counted in all-cause	L/R
+GD1	273	TRUE	weight loss	TRUE	counted in all-cause	L/R
+GD2	263	TRUE	moribund	TRUE	counted in all-cause	L/R
+GD3	273	TRUE	weight loss	TRUE	counted in all-cause	L/R
+GD4	263	TRUE	found dead	TRUE	counted in all-cause	none
+GE1	423	TRUE	secondary complications	TRUE	counted in all-cause	none
+GE2	423	TRUE	secondary complications	TRUE	counted in all-cause	none
+GF1	425	TRUE	secondary complications	TRUE	counted in all-cause	none
+GF2	441	TRUE	secondary complications	TRUE	counted in all-cause	L/R
+GG1	425	TRUE	secondary complications	TRUE	counted in all-cause	none
+GG2	207	TRUE	found dead	TRUE	counted in all-cause	none
+GG3	425	TRUE	secondary complications	TRUE	counted in all-cause	none
+GH1	287	TRUE	found dead	TRUE	counted in all-cause	none
+GH2	276	TRUE	moribund	TRUE	counted in all-cause	none
+GH3	294	TRUE	five symptoms	TRUE	counted in all-cause	L/R
+GH4	265	TRUE	five symptoms	TRUE	counted in all-cause	none
+GI1	1	FALSE	surgical complications	FALSE	within one day post-surgery	
+GI2	287	TRUE	moribund	TRUE	counted in all-cause	none
+GI3	325	TRUE	moribund	TRUE	counted in all-cause	L/R
+GI4	279	TRUE	found dead	TRUE	counted in all-cause	none
+GJ1	203	TRUE	five symptoms	TRUE	counted in all-cause	none
+GJ2	283	TRUE	moribund	TRUE	counted in all-cause	L/R
+GJ3	208	TRUE	five symptoms	TRUE	counted in all-cause	L/R
+GK1	4	FALSE	surgical complications	TRUE	counted in all-cause	
+GK2	265	TRUE	five symptoms	TRUE	counted in all-cause	none
+GK3	261	TRUE	found dead	TRUE	counted in all-cause	none
+GK4	264	TRUE	moribund	TRUE	counted in all-cause	L/R
+GK5	265	TRUE	five symptoms	TRUE	counted in all-cause	none
+GL1	152	TRUE	five symptoms	TRUE	counted in all-cause	whole
+GL2	154	TRUE	five symptoms	TRUE	counted in all-cause	whole
+GL3	154	TRUE	five symptoms	TRUE	counted in all-cause	whole
+GL4	10	FALSE	intercurrent / other	FALSE	experimental error or complication	none
+GM1	154	TRUE	five symptoms	TRUE	counted in all-cause	whole
+GM2	154	TRUE	five symptoms	TRUE	counted in all-cause	whole
+GM3	147	TRUE	body condition score	TRUE	counted in all-cause	whole
+GM4	143	TRUE	found dead	TRUE	counted in all-cause	none
+GN1	154	TRUE	five symptoms	TRUE	counted in all-cause	whole
+GN2	42	FALSE	intercurrent / other	FALSE	experimental error or complication	none
+GN3	160	TRUE	five symptoms	TRUE	counted in all-cause	none
+GN4	168	TRUE	five symptoms	TRUE	counted in all-cause	whole
+GO1	168	TRUE	found dead	TRUE	counted in all-cause	none
+GO2	154	TRUE	five symptoms	TRUE	counted in all-cause	whole
+GO3	161	TRUE	weight loss	TRUE	counted in all-cause	whole
+GO4	164	TRUE	weight loss	TRUE	counted in all-cause	whole
+GP1	105	FALSE	found dead	TRUE	counted in all-cause	none
+GP2	143	TRUE	five symptoms	TRUE	counted in all-cause	none
+GP3	105	FALSE	found dead	TRUE	counted in all-cause	none
+GP4	104	FALSE	intercurrent / other	FALSE	experimental error or complication	none
+GQ1	152	TRUE	five symptoms	TRUE	counted in all-cause	whole
+GQ2	0	FALSE	surgical complications	FALSE	within one day post-surgery	none
+GQ3	152	TRUE	five symptoms	TRUE	counted in all-cause	whole
+GQ4	154	TRUE	five symptoms	TRUE	counted in all-cause	whole
+GR1	147	TRUE	five symptoms	TRUE	counted in all-cause	whole
+GR2	0	FALSE	surgical complications	FALSE	within one day post-surgery	none
+GR3	152	TRUE	five symptoms	TRUE	counted in all-cause	whole
+GR4	122	TRUE	secondary complications	TRUE	counted in all-cause	none
+GS1	147	TRUE	five symptoms	TRUE	counted in all-cause	whole
+GS2	152	TRUE	five symptoms	TRUE	counted in all-cause	whole
+GS3	152	TRUE	five symptoms	TRUE	counted in all-cause	whole
+GS4	147	TRUE	five symptoms	TRUE	counted in all-cause	whole
+GT1	122	TRUE	found dead	TRUE	counted in all-cause	none
+GT2	1	FALSE	found dead	FALSE	within one day post-surgery	none
+GT3	147	TRUE	five symptoms	TRUE	counted in all-cause	whole
+GT4	147	TRUE	five symptoms	TRUE	counted in all-cause	whole
+GU1	164	TRUE	five symptoms	TRUE	counted in all-cause	whole
+GU2	164	TRUE	five symptoms	TRUE	counted in all-cause	whole
+GU3	164	TRUE	five symptoms	TRUE	counted in all-cause	whole
+GU4	164	TRUE	five symptoms	TRUE	counted in all-cause	whole
+MA1	160	TRUE	five symptoms	TRUE	counted in all-cause	none
+MA2	6	FALSE	found dead	TRUE	counted in all-cause	
+MA3	153	TRUE	five symptoms	TRUE	counted in all-cause	none
+MA4	153	TRUE	five symptoms	TRUE	counted in all-cause	none
+MB1	153	TRUE	five symptoms	TRUE	counted in all-cause	none
+MB2	160	TRUE	five symptoms	TRUE	counted in all-cause	L/R
+MB3	161	TRUE	five symptoms	TRUE	counted in all-cause	L/R
+MB4	161	TRUE	five symptoms	TRUE	counted in all-cause	L/R
+MC1	312	TRUE	found dead	TRUE	counted in all-cause	none
+MC2	313	TRUE	found dead	TRUE	counted in all-cause	none
+MC3	314	TRUE	found dead	TRUE	counted in all-cause	none
+MC4	314	TRUE	moribund	TRUE	counted in all-cause	L/R
+MD1	266	TRUE	five symptoms	TRUE	counted in all-cause	L/R
+MD2	77	FALSE	surgical complications	FALSE	within one day post-surgery	
+MD3	266	TRUE	five symptoms	TRUE	counted in all-cause	L/R
+MD4	275	TRUE	five symptoms	TRUE	counted in all-cause	none
+ME1	153	TRUE	five symptoms	TRUE	counted in all-cause	none
+ME2	153	TRUE	five symptoms	TRUE	counted in all-cause	none
+ME3	148	TRUE	five symptoms	TRUE	counted in all-cause	L/R
+ME4	148	TRUE	five symptoms	TRUE	counted in all-cause	L/R
+MF1	156	TRUE	five symptoms	TRUE	counted in all-cause	none
+MF2	155	TRUE	five symptoms	TRUE	counted in all-cause	none
+MF3	156	TRUE	five symptoms	TRUE	counted in all-cause	none
+MF4	155	TRUE	five symptoms	TRUE	counted in all-cause	none
+MG1	307	TRUE	found dead	TRUE	counted in all-cause	none
+MG2	316	TRUE	five symptoms	TRUE	counted in all-cause	none
+MG3	316	TRUE	five symptoms	TRUE	counted in all-cause	none
+MG4	316	TRUE	five symptoms	TRUE	counted in all-cause	none
+MH1	266	TRUE	five symptoms	TRUE	counted in all-cause	L/R
+MH2	266	TRUE	five symptoms	TRUE	counted in all-cause	L/R
+MH3	289	TRUE	five symptoms	TRUE	counted in all-cause	none
+MH4	294	TRUE	five symptoms	TRUE	counted in all-cause	none
+MI1	140	TRUE	five symptoms	TRUE	counted in all-cause	none
+MI2	148	TRUE	five symptoms	TRUE	counted in all-cause	L/R
+MI3	169	TRUE	five symptoms	TRUE	counted in all-cause	none
+MI4	153	TRUE	five symptoms	TRUE	counted in all-cause	none
+MJ1	266	TRUE	five symptoms	TRUE	counted in all-cause	L/R
+MJ2	301	TRUE	five symptoms	TRUE	counted in all-cause	L/R
+MJ3	289	TRUE	five symptoms	TRUE	counted in all-cause	none
+MJ4	280	TRUE	five symptoms	TRUE	counted in all-cause	none
+QA1	167	TRUE	weight loss	TRUE	counted in all-cause	L/R
+QA2	167	TRUE	weight loss	TRUE	counted in all-cause	L/R
+QA3	167	TRUE	weight loss	TRUE	counted in all-cause	L/R
+QA4	167	TRUE	weight loss	TRUE	counted in all-cause	L/R
+QB1	169	TRUE	weight loss	TRUE	counted in all-cause	L/R
+QB2	174	TRUE	weight loss	TRUE	counted in all-cause	L/R
+QB3	183	TRUE	weight loss	TRUE	counted in all-cause	none
+QB4	174	TRUE	weight loss	TRUE	counted in all-cause	L/R
+QC1	242	TRUE	weight loss	TRUE	counted in all-cause	none
+QC2	246	TRUE	weight loss	TRUE	counted in all-cause	none
+QC3	249	TRUE	weight loss	TRUE	counted in all-cause	none
+QC4	249	TRUE	weight loss	TRUE	counted in all-cause	none
+QD1	249	TRUE	weight loss	TRUE	counted in all-cause	none
+QD2	244	TRUE	weight loss	TRUE	counted in all-cause	none
+QD3	277	TRUE	weight loss	TRUE	counted in all-cause	none
+QD4	244	TRUE	weight loss	TRUE	counted in all-cause	none
+RA1	152	TRUE	moribund	TRUE	counted in all-cause	L/R
+RA2	161	TRUE	weight loss	TRUE	counted in all-cause	L/R
+RA3	156	TRUE	moribund	TRUE	counted in all-cause	none
+RA4	159	TRUE	weight loss	TRUE	counted in all-cause	L/R
+RB1	301	TRUE	moribund	TRUE	counted in all-cause	L/R
+RB2	79	FALSE	found dead	TRUE	counted in all-cause	none
+RB3	264	TRUE	moribund	TRUE	counted in all-cause	L/R
+RB4	271	TRUE	weight loss	TRUE	counted in all-cause	none
+RC1	160	TRUE	moribund	TRUE	counted in all-cause	L/R
+RC2	76	FALSE	surgical complications	FALSE	within one day post-surgery	none
+RC3	165	TRUE	found dead	TRUE	counted in all-cause	none
+RC4	160	TRUE	surgical complications	TRUE	counted in all-cause	none
+RD1	76	FALSE	surgical complications	FALSE	within one day post-surgery	none
+RD2	296	TRUE	found dead	TRUE	counted in all-cause	none
+RD3	259	TRUE	secondary complications	TRUE	counted in all-cause	none
+RD4	271	TRUE	five symptoms	TRUE	counted in all-cause	none
+SAY1	158	TRUE	five symptoms	TRUE	counted in all-cause	L/R
+SAY2	149	TRUE	five symptoms	TRUE	counted in all-cause	L/R
+SAY3	149	TRUE	five symptoms	TRUE	counted in all-cause	L/R
+SAY4	158	TRUE	five symptoms	TRUE	counted in all-cause	L/R
+SBY1	186	TRUE	five symptoms	TRUE	counted in all-cause	none
+SBY2	207	TRUE	five symptoms	TRUE	counted in all-cause	none
+SBY3	211	TRUE	five symptoms	TRUE	counted in all-cause	L/R
+SBY4	211	TRUE	five symptoms	TRUE	counted in all-cause	L/R
+SCY1	149	TRUE	five symptoms	TRUE	counted in all-cause	L/R
+SCY2	142	TRUE	five symptoms	TRUE	counted in all-cause	L/R
+SCY3	149	TRUE	five symptoms	TRUE	counted in all-cause	L/R
+SCY4	158	TRUE	five symptoms	TRUE	counted in all-cause	L/R
+SDY1	207	TRUE	five symptoms	TRUE	counted in all-cause	none
+SDY2	207	TRUE	five symptoms	TRUE	counted in all-cause	none
+SDY3	211	TRUE	five symptoms	TRUE	counted in all-cause	L/R
+SDY4	NA	FALSE	intercurrent / other	FALSE	before treatment group assignment	
+SEY1	200	TRUE	moribund	TRUE	counted in all-cause	L/R
+SEY2	200	TRUE	five symptoms	TRUE	counted in all-cause	L/R
+SEY3	200	TRUE	moribund	TRUE	counted in all-cause	L/R
+SEY4	206	TRUE	five symptoms	TRUE	counted in all-cause	none
+SFY1	196	TRUE	five symptoms	TRUE	counted in all-cause	L/R
+SFY2	9	FALSE	found dead	TRUE	counted in all-cause	
+SFY3	199	TRUE	five symptoms	TRUE	counted in all-cause	L/R
+SFY4	199	TRUE	five symptoms	TRUE	counted in all-cause	L/R
+SGY1	163	TRUE	five symptoms	TRUE	counted in all-cause	L/R
+SGY2	151	TRUE	body condition score	TRUE	counted in all-cause	L/R
+SGY3	156	TRUE	five symptoms	TRUE	counted in all-cause	L/R
+SGY4	163	TRUE	five symptoms	TRUE	counted in all-cause	L/R
+SHY1	207	TRUE	five symptoms	TRUE	counted in all-cause	none
+SHY2	207	TRUE	five symptoms	TRUE	counted in all-cause	none
+SHY3	211	TRUE	five symptoms	TRUE	counted in all-cause	L/R
+SHY4	207	TRUE	five symptoms	TRUE	counted in all-cause	none
+SIY1	149	TRUE	five symptoms	TRUE	counted in all-cause	L/R
+SIY2	149	TRUE	five symptoms	TRUE	counted in all-cause	L/R
+SIY3	149	TRUE	five symptoms	TRUE	counted in all-cause	L/R
+SIY4	156	TRUE	five symptoms	TRUE	counted in all-cause	L/R
+SJY1	207	TRUE	five symptoms	TRUE	counted in all-cause	none
+SJY2	207	TRUE	five symptoms	TRUE	counted in all-cause	none
+SJY3	211	TRUE	five symptoms	TRUE	counted in all-cause	L/R
+SJY4	211	TRUE	five symptoms	TRUE	counted in all-cause	L/R
+SAZ1	0	FALSE	surgical complications	FALSE	within one day post-surgery	
+SAZ2	149	TRUE	five symptoms	TRUE	counted in all-cause	L/R
+SAZ3	149	TRUE	five symptoms	TRUE	counted in all-cause	L/R
+SAZ4	149	TRUE	five symptoms	TRUE	counted in all-cause	L/R
+SBZ1	194	TRUE	five symptoms	TRUE	counted in all-cause	L/R
+SBZ2	197	TRUE	five symptoms	TRUE	counted in all-cause	none
+SBZ3	198	TRUE	five symptoms	TRUE	counted in all-cause	L/R
+SBZ4	189	TRUE	five symptoms	TRUE	counted in all-cause	none
+SCZ1	177	TRUE	five symptoms	TRUE	counted in all-cause	none
+SCZ2	0	FALSE	surgical complications	FALSE	within one day post-surgery	
+SCZ3	161	TRUE	five symptoms	TRUE	counted in all-cause	L/R
+SCZ4	177	TRUE	five symptoms	TRUE	counted in all-cause	none
+SDZ1	218	TRUE	five symptoms	TRUE	counted in all-cause	none
+SDZ2	0	FALSE	surgical complications	FALSE	within one day post-surgery	
+SDZ3	0	FALSE	surgical complications	FALSE	within one day post-surgery	
+SDZ4	197	TRUE	five symptoms	TRUE	counted in all-cause	L/R
+SEZ1	154	TRUE	five symptoms	TRUE	counted in all-cause	L/R
+SEZ2	156	TRUE	five symptoms	TRUE	counted in all-cause	L/R
+SEZ3	154	TRUE	five symptoms	TRUE	counted in all-cause	L/R
+SEZ4	161	TRUE	five symptoms	TRUE	counted in all-cause	L/R
+SFZ1	218	TRUE	five symptoms	TRUE	counted in all-cause	L/R
+SFZ2	210	TRUE	five symptoms	TRUE	counted in all-cause	L/R
+SFZ3	210	TRUE	five symptoms	TRUE	counted in all-cause	L/R
+SFZ4	218	TRUE	five symptoms	TRUE	counted in all-cause	none
+SGZ1	163	TRUE	five symptoms	TRUE	counted in all-cause	L/R
+SGZ2	6	FALSE	found dead	TRUE	counted in all-cause	
+SGZ3	163	TRUE	five symptoms	TRUE	counted in all-cause	L/R
+SGZ4	163	TRUE	five symptoms	TRUE	counted in all-cause	L/R
+SHZ1	218	TRUE	five symptoms	TRUE	counted in all-cause	L/R
+SHZ2	218	TRUE	five symptoms	TRUE	counted in all-cause	L/R
+SHZ3	315	FALSE	intercurrent / other	FALSE	never developed disease	L/R
+SHZ4	230	TRUE	five symptoms	TRUE	counted in all-cause	none
+SIZ1	156	TRUE	five symptoms	TRUE	counted in all-cause	L/R
+SIZ2	156	TRUE	five symptoms	TRUE	counted in all-cause	L/R
+SIZ3	156	TRUE	five symptoms	TRUE	counted in all-cause	L/R
+SIZ4	0	FALSE	surgical complications	FALSE	within one day post-surgery	
+SJZ1	215	TRUE	five symptoms	TRUE	counted in all-cause	none
+SJZ2	215	TRUE	five symptoms	TRUE	counted in all-cause	none
+SJZ3	209	TRUE	five symptoms	TRUE	counted in all-cause	L/R
+SJZ4	215	TRUE	five symptoms	TRUE	counted in all-cause	none
+TG1	0	FALSE	surgical complications	FALSE	within one day post-surgery	
+TG2	140	TRUE	five symptoms	TRUE	counted in all-cause	L/R
+TG3	140	TRUE	five symptoms	TRUE	counted in all-cause	L/R
+TG4	142	TRUE	body condition score	TRUE	counted in all-cause	none
+TI1	280	TRUE	five symptoms	TRUE	counted in all-cause	L/R
+TI2	NA	FALSE	intercurrent / other	FALSE	experimental error or complication	
+TI3	390	TRUE	found dead	TRUE	counted in all-cause	none
+TI4	443	TRUE	weight loss	TRUE	counted in all-cause	L/R
+TJ1	140	TRUE	five symptoms	TRUE	counted in all-cause	L/R
+TJ2	147	TRUE	five symptoms	TRUE	counted in all-cause	none
+TJ3	147	TRUE	five symptoms	TRUE	counted in all-cause	none
+TJ4	147	TRUE	five symptoms	TRUE	counted in all-cause	none
+TK1	437	TRUE	moribund	TRUE	counted in all-cause	none
+TK2	415	TRUE	five symptoms	TRUE	counted in all-cause	none
+TK3	441	TRUE	found dead	TRUE	counted in all-cause	none
+TK4	343	TRUE	found dead	TRUE	counted in all-cause	none
+TL1	149	TRUE	five symptoms	TRUE	counted in all-cause	L/R
+TL2	145	TRUE	five symptoms	TRUE	counted in all-cause	none
+TL3	142	TRUE	five symptoms	TRUE	counted in all-cause	none
+TL4	145	TRUE	five symptoms	TRUE	counted in all-cause	none
+TM1	474	TRUE	five symptoms	TRUE	counted in all-cause	none
+TM2	457	FALSE	surgical complications	FALSE	within one day post-surgery	none
+TM3	437	TRUE	moribund	TRUE	counted in all-cause	none
+TM4	341	TRUE	found dead	TRUE	counted in all-cause	none
+TN1	147	TRUE	five symptoms	TRUE	counted in all-cause	none
+TN2	147	TRUE	five symptoms	TRUE	counted in all-cause	none
+TN3	140	TRUE	five symptoms	TRUE	counted in all-cause	L/R
+TN4	145	TRUE	five symptoms	TRUE	counted in all-cause	none
+TO1	474	TRUE	five symptoms	TRUE	counted in all-cause	none
+TO2	478	TRUE	five symptoms	TRUE	counted in all-cause	none
+TO3	467	TRUE	five symptoms	TRUE	counted in all-cause	none
+TO4	441	TRUE	five symptoms	TRUE	counted in all-cause	L/R
+TP1	154	TRUE	five symptoms	TRUE	counted in all-cause	none
+TP2	149	TRUE	five symptoms	TRUE	counted in all-cause	L/R
+TP3	154	TRUE	five symptoms	TRUE	counted in all-cause	none
+TP4	149	TRUE	five symptoms	TRUE	counted in all-cause	none
+TQ1	191	TRUE	five symptoms	TRUE	counted in all-cause	L/R
+TQ2	180	TRUE	five symptoms	TRUE	counted in all-cause	L/R
+TQ3	156	FALSE	found dead	TRUE	counted in all-cause	
+TQ4	116	FALSE	found dead	TRUE	counted in all-cause	
+TR1	147	TRUE	five symptoms	TRUE	counted in all-cause	none
+TR2	159	TRUE	five symptoms	TRUE	counted in all-cause	L/R
+TR3	147	TRUE	five symptoms	TRUE	counted in all-cause	none
+TR4	152	TRUE	five symptoms	TRUE	counted in all-cause	none
+TS1	184	TRUE	five symptoms	TRUE	counted in all-cause	L/R
+TS2	180	TRUE	five symptoms	TRUE	counted in all-cause	L/R
+TS3	117	FALSE	found dead	TRUE	counted in all-cause	
+TS4	183	TRUE	five symptoms	TRUE	counted in all-cause	L/R
+TT1	147	TRUE	five symptoms	TRUE	counted in all-cause	none
+TT2	147	TRUE	five symptoms	TRUE	counted in all-cause	none
+TT3	147	TRUE	five symptoms	TRUE	counted in all-cause	none
+TT4	147	TRUE	five symptoms	TRUE	counted in all-cause	none
+TU1	175	TRUE	five symptoms	TRUE	counted in all-cause	L/R
+TU2	175	TRUE	five symptoms	TRUE	counted in all-cause	none
+TU3	175	TRUE	five symptoms	TRUE	counted in all-cause	none
+TU4	175	TRUE	five symptoms	TRUE	counted in all-cause	none
+TV1	152	TRUE	five symptoms	TRUE	counted in all-cause	none
+TV2	163	TRUE	five symptoms	TRUE	counted in all-cause	L/R
+TV3	163	TRUE	five symptoms	TRUE	counted in all-cause	L/R
+TV4	152	TRUE	five symptoms	TRUE	counted in all-cause	none
+TW1	162	TRUE	five symptoms	TRUE	counted in all-cause	L/R
+TW2	162	TRUE	five symptoms	TRUE	counted in all-cause	L/R
+TW3	183	TRUE	five symptoms	TRUE	counted in all-cause	L/R
+TW4	141	TRUE	found dead	TRUE	counted in all-cause	none
+TX1	0	FALSE	surgical complications	FALSE	within one day post-surgery	
+TX2	145	TRUE	five symptoms	TRUE	counted in all-cause	none
+TX3	140	TRUE	five symptoms	TRUE	counted in all-cause	L/R
+TX4	156	TRUE	five symptoms	TRUE	counted in all-cause	L/R
+TY1	306	TRUE	found dead	TRUE	counted in all-cause	none
+TY2	364	TRUE	five symptoms	TRUE	counted in all-cause	L/R
+TY3	366	TRUE	five symptoms	TRUE	counted in all-cause	none
+TY4	345	FALSE	surgical complications	FALSE	within one day post-surgery	
+TZ1	147	TRUE	five symptoms	TRUE	counted in all-cause	none
+TZ2	159	TRUE	body condition score	TRUE	counted in all-cause	L/R
+TZ3	147	TRUE	five symptoms	TRUE	counted in all-cause	none
+TZ4	149	TRUE	five symptoms	TRUE	counted in all-cause	L/R
+TAA1	420	TRUE	found dead	TRUE	counted in all-cause	none
+TAA2	443	TRUE	weight loss	TRUE	counted in all-cause	L/R
+TAA3	453	TRUE	found dead	TRUE	counted in all-cause	none
+TAA4	450	TRUE	weight loss	TRUE	counted in all-cause	L/R
+TAB1	154	TRUE	five symptoms	TRUE	counted in all-cause	none
+TAB2	154	TRUE	five symptoms	TRUE	counted in all-cause	none
+TAB3	152	TRUE	five symptoms	TRUE	counted in all-cause	none
+TAB4	154	TRUE	five symptoms	TRUE	counted in all-cause	none
+TAC1	385	TRUE	found dead	TRUE	counted in all-cause	none
+TAC2	406	TRUE	five symptoms	TRUE	counted in all-cause	L/R
+TAC3	392	TRUE	weight loss	TRUE	counted in all-cause	L/R
+TAC4	434	TRUE	found dead	TRUE	counted in all-cause	none
+TAD1	149	TRUE	five symptoms	TRUE	counted in all-cause	L/R
+TAD2	149	TRUE	five symptoms	TRUE	counted in all-cause	none
+TAD3	140	TRUE	five symptoms	TRUE	counted in all-cause	L/R
+TAD4	149	TRUE	five symptoms	TRUE	counted in all-cause	none
+TAE1	323	FALSE	surgical complications	FALSE	within one day post-surgery	none
+TAE2	461	TRUE	moribund	TRUE	counted in all-cause	none
+TAE3	163	TRUE	five symptoms	TRUE	counted in all-cause	L/R
+TAE4	464	TRUE	five symptoms	TRUE	counted in all-cause	L/R
+TAF1	0	FALSE	surgical complications	FALSE	within one day post-surgery	
+TAF2	135	TRUE	five symptoms	TRUE	counted in all-cause	L/R
+TAF3	5	FALSE	surgical complications	FALSE	before treatment group assignment	
+TAF4	135	TRUE	five symptoms	TRUE	counted in all-cause	L/R
+TAG1	0	FALSE	surgical complications	FALSE	within one day post-surgery	
+TAG2	429	TRUE	five symptoms	TRUE	counted in all-cause	L/R
+TAG3	482	TRUE	five symptoms	TRUE	counted in all-cause	L/R
+TAG4	478	TRUE	five symptoms	TRUE	counted in all-cause	L/R
+TAH1	152	TRUE	five symptoms	TRUE	counted in all-cause	none
+TAH2	162	TRUE	five symptoms	TRUE	counted in all-cause	none
+TAH3	140	TRUE	five symptoms	TRUE	counted in all-cause	L/R
+TAH4	145	TRUE	five symptoms	TRUE	counted in all-cause	none
+TAI1	418	TRUE	five symptoms	TRUE	counted in all-cause	L/R
+TAI2	492	TRUE	moribund	TRUE	counted in all-cause	none
+TAI3	495	TRUE	moribund	TRUE	counted in all-cause	none
+TAI4	188	TRUE	five symptoms	TRUE	counted in all-cause	L/R
+VA1	181	TRUE	weight loss	TRUE	counted in all-cause	none
+VA2	162	TRUE	weight loss	TRUE	counted in all-cause	none
+VA3	171	TRUE	weight loss	TRUE	counted in all-cause	none
+VA4	157	TRUE	weight loss	TRUE	counted in all-cause	none
+VB1	176	TRUE	weight loss	TRUE	counted in all-cause	none
+VB2	176	TRUE	weight loss	TRUE	counted in all-cause	none
+VB3	155	TRUE	weight loss	TRUE	counted in all-cause	L/R
+VB4	176	TRUE	weight loss	TRUE	counted in all-cause	none
+VC1	164	TRUE	weight loss	TRUE	counted in all-cause	L/R
+VC2	164	TRUE	weight loss	TRUE	counted in all-cause	L/R
+VC3	162	TRUE	weight loss	TRUE	counted in all-cause	none
+VC4	160	TRUE	weight loss	TRUE	counted in all-cause	L/R
+VD1	255	TRUE	weight loss	TRUE	counted in all-cause	L/R
+VD2	132	TRUE	weight loss	TRUE	counted in all-cause	L/R
+VD3	251	TRUE	found dead	TRUE	counted in all-cause	none
+VD4	155	TRUE	found dead	TRUE	counted in all-cause	none
+VE1	262	TRUE	secondary complications	TRUE	counted in all-cause	none
+VE2	262	TRUE	secondary complications	TRUE	counted in all-cause	none
+VE3	246	TRUE	moribund	TRUE	counted in all-cause	L/R
+VE4	134	TRUE	found dead	TRUE	counted in all-cause	none
+VF1	130	TRUE	found dead	TRUE	counted in all-cause	none
+VF2	164	TRUE	found dead	TRUE	counted in all-cause	L/R
+VF3	283	TRUE	weight loss	TRUE	counted in all-cause	none
+VF4	262	TRUE	secondary complications	TRUE	counted in all-cause	none
+VG1	159	TRUE	moribund	TRUE	counted in all-cause	L/R
+VG2	140	TRUE	moribund	TRUE	counted in all-cause	none
+VG3	155	TRUE	found dead	TRUE	counted in all-cause	none
+VG4	153	TRUE	found dead	TRUE	counted in all-cause	none
+VH1	181	TRUE	weight loss	TRUE	counted in all-cause	none
+VH2	174	TRUE	weight loss	TRUE	counted in all-cause	none
+VH3	181	TRUE	moribund	TRUE	counted in all-cause	none
+VH4	164	TRUE	weight loss	TRUE	counted in all-cause	L/R
+VI1	163	TRUE	found dead	TRUE	counted in all-cause	none
+VI2	157	TRUE	weight loss	TRUE	counted in all-cause	none
+VI3	0	FALSE	surgical complications	FALSE	within one day post-surgery	none
+VI4	160	TRUE	weight loss	TRUE	counted in all-cause	L/R
+VJ1	157	TRUE	moribund	TRUE	counted in all-cause	none
+VJ2	146	TRUE	moribund	TRUE	counted in all-cause	L/R
+VJ3	146	TRUE	found dead	TRUE	counted in all-cause	none
+VJ4	142	TRUE	found dead	TRUE	counted in all-cause	none
+VK1	141	TRUE	found dead	TRUE	counted in all-cause	none
+VK2	145	TRUE	found dead	TRUE	counted in all-cause	none
+VK3	267	TRUE	weight loss	TRUE	counted in all-cause	L/R
+VK4	234	TRUE	weight loss	TRUE	counted in all-cause	L/R
+VL1	262	TRUE	secondary complications	TRUE	counted in all-cause	none
+VL2	145	TRUE	moribund	TRUE	counted in all-cause	none
+VL3	146	TRUE	weight loss	TRUE	counted in all-cause	L/R
+VL4	141	TRUE	moribund	TRUE	counted in all-cause	L/R
+VM1	169	TRUE	weight loss	TRUE	counted in all-cause	none
+VM2	169	TRUE	weight loss	TRUE	counted in all-cause	none
+VM3	166	TRUE	weight loss	TRUE	counted in all-cause	none
+VM4	150	TRUE	weight loss	TRUE	counted in all-cause	none
+VN1	168	TRUE	weight loss	TRUE	counted in all-cause	L/R
+VN2	174	TRUE	weight loss	TRUE	counted in all-cause	none
+VN3	168	TRUE	weight loss	TRUE	counted in all-cause	L/R
+VN4	174	TRUE	weight loss	TRUE	counted in all-cause	none
+VO1	163	TRUE	moribund	TRUE	counted in all-cause	none
+VO2	181	TRUE	moribund	TRUE	counted in all-cause	L/R
+VO3	169	TRUE	moribund	TRUE	counted in all-cause	none
+VO4	169	TRUE	weight loss	TRUE	counted in all-cause	L/R
+VP1	258	TRUE	weight loss	TRUE	counted in all-cause	none
+VP2	148	TRUE	moribund	TRUE	counted in all-cause	L/R
+VP3	211	TRUE	found dead	TRUE	counted in all-cause	L/R
+VP4	279	TRUE	weight loss	TRUE	counted in all-cause	L/R
+VQ1	162	TRUE	weight loss	TRUE	counted in all-cause	none
+VQ2	154	TRUE	moribund	TRUE	counted in all-cause	none
+VQ3	158	TRUE	found dead	TRUE	counted in all-cause	none
+VQ4	288	TRUE	weight loss	TRUE	counted in all-cause	L/R
+VR1	157	TRUE	weight loss	TRUE	counted in all-cause	none
+VR2	22	FALSE	intercurrent / other	FALSE	before treatment group assignment	none
+VR3	210	TRUE	found dead	TRUE	counted in all-cause	none
+VR4	155	TRUE	found dead	TRUE	counted in all-cause	none
+VS1	150	FALSE	moribund	FALSE	before treatment group assignment	none
+VS2	160	TRUE	weight loss	TRUE	counted in all-cause	L/R
+VS3	160	TRUE	weight loss	TRUE	counted in all-cause	L/R
+VS4	154	FALSE	moribund	FALSE	before treatment group assignment	none
+VT1	156	FALSE	surgical complications	FALSE	within one day post-surgery	none
+VT2	160	TRUE	weight loss	TRUE	counted in all-cause	L/R
+VT3	150	FALSE	moribund	FALSE	before treatment group assignment	none
+VT4	0	FALSE	intercurrent / other	FALSE	experimental error or complication	none
+VU1	162	TRUE	weight loss	TRUE	counted in all-cause	none
+VU2	169	TRUE	found dead	TRUE	counted in all-cause	none
+VU3	160	TRUE	found dead	TRUE	counted in all-cause	none
+VU4	171	TRUE	weight loss	TRUE	counted in all-cause	L/R
+VV1	169	TRUE	weight loss	TRUE	counted in all-cause	L/R
+VV2	160	TRUE	found dead	TRUE	counted in all-cause	none
+VV3	160	TRUE	weight loss	TRUE	counted in all-cause	L/R
+VV4	171	TRUE	weight loss	TRUE	counted in all-cause	L/R
+VW1	164	TRUE	found dead	TRUE	counted in all-cause	none
+VW2	162	TRUE	weight loss	TRUE	counted in all-cause	none
+VW3	169	TRUE	weight loss	TRUE	counted in all-cause	L/R
+VW4	160	TRUE	weight loss	TRUE	counted in all-cause	L/R
+VX1	153	TRUE	found dead	FALSE	before treatment group assignment	none
+VX2	155	TRUE	weight loss	FALSE	counted in all-cause	L/R
+VX3	155	TRUE	weight loss	FALSE	counted in all-cause	L/R
+VX4	164	TRUE	weight loss	TRUE	counted in all-cause	L/R
+ZA1	160	TRUE	found dead	TRUE	counted in all-cause	none
+ZA2	168	TRUE	weight loss	TRUE	counted in all-cause	L/R
+ZA3	160	TRUE	found dead	TRUE	counted in all-cause	none
+ZA4	163	TRUE	weight loss	TRUE	counted in all-cause	none
+ZB1	168	TRUE	weight loss	TRUE	counted in all-cause	L/R
+ZB2	171	TRUE	weight loss	TRUE	counted in all-cause	L/R
+ZB3	157	TRUE	weight loss	TRUE	counted in all-cause	L/R
+ZB4	162	TRUE	moribund	TRUE	counted in all-cause	L/R
+ZC1	246	TRUE	weight loss	TRUE	counted in all-cause	L/R
+ZC2	21	FALSE	found dead	FALSE	before treatment group assignment	none
+ZC3	259	TRUE	moribund	TRUE	counted in all-cause	none
+ZC4	138	TRUE	found dead	TRUE	counted in all-cause	none
+ZD1	248	TRUE	weight loss	TRUE	counted in all-cause	none
+ZD2	248	TRUE	weight loss	TRUE	counted in all-cause	none
+ZD3	251	TRUE	moribund	TRUE	counted in all-cause	L/R
+ZD4	256	TRUE	moribund	TRUE	counted in all-cause	none
+ZE1	171	TRUE	moribund	TRUE	counted in all-cause	L/R
+ZE2	154	TRUE	moribund	TRUE	counted in all-cause	L/R
+ZE3	150	TRUE	found dead	TRUE	counted in all-cause	none
+ZE4	158	TRUE	found dead	TRUE	counted in all-cause	none
+ZF1	163	TRUE	moribund	TRUE	counted in all-cause	none
+ZF2	162	TRUE	found dead	TRUE	counted in all-cause	none
+ZF3	160	TRUE	body condition score	TRUE	counted in all-cause	none
+ZF4	156	TRUE	found dead	TRUE	counted in all-cause	none
+ZG1	262	TRUE	moribund	TRUE	counted in all-cause	L/R
+ZG2	266	TRUE	five symptoms	TRUE	counted in all-cause	L/R
+ZG3	243	TRUE	moribund	TRUE	counted in all-cause	L/R
+ZG4	133	TRUE	found dead	TRUE	counted in all-cause	none
+ZH1	133	TRUE	found dead	TRUE	counted in all-cause	none
+ZH2	160	TRUE	moribund	TRUE	counted in all-cause	L/R
+ZH3	229	TRUE	found dead	TRUE	counted in all-cause	none
+ZH4	18	FALSE	found dead	FALSE	before treatment group assignment	none
+ZI1	124	FALSE	surgical complications	FALSE	within one day post-surgery	none
+ZI2	160	TRUE	moribund	TRUE	counted in all-cause	L/R
+ZI3	166	TRUE	found dead	TRUE	counted in all-cause	none
+ZI4	152	TRUE	weight loss	TRUE	counted in all-cause	L/R
+ZJ1	166	TRUE	body condition score	TRUE	counted in all-cause	none
+ZJ2	170	TRUE	moribund	TRUE	counted in all-cause	none
+ZJ3	123	FALSE	surgical complications	FALSE	within one day post-surgery	none
+ZJ4	170	TRUE	found dead	TRUE	counted in all-cause	none
+ZK1	133	TRUE	found dead	TRUE	counted in all-cause	none
+ZK2	259	TRUE	five symptoms	TRUE	counted in all-cause	L/R
+ZK3	178	TRUE	body condition score	TRUE	counted in all-cause	L/R
+ZK4	232	TRUE	found dead	TRUE	counted in all-cause	none
+ZL1	136	TRUE	found dead	TRUE	counted in all-cause	none
+ZL2	262	TRUE	moribund	TRUE	counted in all-cause	L/R
+ZL3	162	TRUE	found dead	TRUE	counted in all-cause	none
+ZL4	152	TRUE	found dead	TRUE	counted in all-cause	none
+ZM1	162	TRUE	moribund	TRUE	counted in all-cause	none
+ZM2	155	TRUE	moribund	TRUE	counted in all-cause	none
+ZM3	149	TRUE	found dead	TRUE	counted in all-cause	none
+ZM4	162	TRUE	moribund	TRUE	counted in all-cause	none
+ZN1	147	TRUE	secondary complications	TRUE	counted in all-cause	L/R
+ZN2	172	TRUE	moribund	TRUE	counted in all-cause	L/R
+ZN3	154	TRUE	found dead	TRUE	counted in all-cause	none
+ZN4	177	TRUE	moribund	TRUE	counted in all-cause	L/R
+ZO1	170	TRUE	moribund	TRUE	counted in all-cause	none
+ZO2	138	TRUE	moribund	TRUE	counted in all-cause	none
+ZO3	186	TRUE	five symptoms	TRUE	counted in all-cause	L/R
+ZO4	240	TRUE	weight loss	TRUE	counted in all-cause	L/R
+ZP1	142	TRUE	moribund	TRUE	counted in all-cause	L/R
+ZP2	143	TRUE	found dead	TRUE	counted in all-cause	none
+ZP3	137	TRUE	moribund	TRUE	counted in all-cause	none
+ZP4	275	TRUE	moribund	TRUE	counted in all-cause	L/R
+ZQ1	132	TRUE	moribund	TRUE	counted in all-cause	none
+ZQ2	166	TRUE	moribund	TRUE	counted in all-cause	none
+ZQ3	170	TRUE	moribund	TRUE	counted in all-cause	L/R
+ZQ4	170	TRUE	moribund	TRUE	counted in all-cause	L/R
+ZR1	168	TRUE	weight loss	TRUE	counted in all-cause	none
+ZR2	181	TRUE	found dead	TRUE	counted in all-cause	none
+ZR3	166	TRUE	moribund	TRUE	counted in all-cause	none
+ZR4	171	TRUE	moribund	TRUE	counted in all-cause	none
+ZS1	128	FALSE	surgical complications	FALSE	within one day post-surgery	none
+ZS2	257	TRUE	five symptoms	TRUE	counted in all-cause	L/R
+ZS3	257	TRUE	moribund	TRUE	counted in all-cause	L/R
+ZS4	250	TRUE	weight loss	TRUE	counted in all-cause	none
+ZT1	128	FALSE	intercurrent / other	FALSE	experimental error or complication	none
+ZT2	128	FALSE	intercurrent / other	FALSE	experimental error or complication	none
+ZT3	128	FALSE	intercurrent / other	FALSE	experimental error or complication	none
+ZT4	128	FALSE	intercurrent / other	FALSE	experimental error or complication	none
+A1	169	TRUE	general prion endpoint	TRUE	counted in all-cause	L/R
+A2	171	TRUE	general prion endpoint	TRUE	counted in all-cause	none
+A3	170	TRUE	found dead	TRUE	counted in all-cause	
+A4	169	TRUE	general prion endpoint	TRUE	counted in all-cause	L/R
+B1	170	TRUE	general prion endpoint	TRUE	counted in all-cause	L/R
+B2	315	FALSE	intercurrent / other	FALSE	never developed disease	L/R
+B3	190	TRUE	general prion endpoint	TRUE	counted in all-cause	L/R
+B4	170	TRUE	found dead	TRUE	counted in all-cause	
+C1	277	TRUE	general prion endpoint	TRUE	counted in all-cause	L/R
+C2	270	TRUE	general prion endpoint	TRUE	counted in all-cause	whole
+C3	277	TRUE	general prion endpoint	TRUE	counted in all-cause	L/R
+C4	252	TRUE	general prion endpoint	TRUE	counted in all-cause	none
+D1	303	TRUE	found dead	TRUE	counted in all-cause	none
+D2	295	TRUE	general prion endpoint	TRUE	counted in all-cause	L/R
+D3	301	TRUE	general prion endpoint	TRUE	counted in all-cause	L/R
+D4	306	TRUE	general prion endpoint	TRUE	counted in all-cause	none
+E1	157	TRUE	general prion endpoint	TRUE	counted in all-cause	none
+E2	171	TRUE	general prion endpoint	TRUE	counted in all-cause	none
+E3	170	TRUE	general prion endpoint	TRUE	counted in all-cause	L/R
+E4	172	TRUE	general prion endpoint	TRUE	counted in all-cause	none
+F1	167	TRUE	found dead	TRUE	counted in all-cause	L/R
+F2	172	TRUE	general prion endpoint	TRUE	counted in all-cause	none
+F3	6	FALSE	found dead	TRUE	counted in all-cause	
+F4	178	TRUE	general prion endpoint	TRUE	counted in all-cause	none
+G1	277	TRUE	general prion endpoint	TRUE	counted in all-cause	L/R
+G2	281	TRUE	general prion endpoint	TRUE	counted in all-cause	none
+G3	263	TRUE	general prion endpoint	TRUE	counted in all-cause	none
+G4	264	TRUE	general prion endpoint	TRUE	counted in all-cause	whole
+H1	301	TRUE	general prion endpoint	TRUE	counted in all-cause	L/R
+H2	301	TRUE	general prion endpoint	TRUE	counted in all-cause	L/R
+H3	301	TRUE	general prion endpoint	TRUE	counted in all-cause	L/R
+H4	299	TRUE	general prion endpoint	TRUE	counted in all-cause	L/R
+I1	172	TRUE	found dead	TRUE	counted in all-cause	none
+I2	170	TRUE	general prion endpoint	TRUE	counted in all-cause	L/R
+I3	168	TRUE	general prion endpoint	TRUE	counted in all-cause	L/R
+I4	168	TRUE	found dead	TRUE	counted in all-cause	L/R
+J1	165	TRUE	general prion endpoint	TRUE	counted in all-cause	L/R
+J2	165	TRUE	general prion endpoint	TRUE	counted in all-cause	L/R
+J3	165	TRUE	general prion endpoint	TRUE	counted in all-cause	L/R
+J4	172	TRUE	general prion endpoint	TRUE	counted in all-cause	none
+K1	0	FALSE	surgical complications	FALSE	within one day post-surgery	
+K2	270	TRUE	general prion endpoint	TRUE	counted in all-cause	whole
+K3	287	TRUE	general prion endpoint	TRUE	counted in all-cause	L/R
+K4	277	TRUE	general prion endpoint	TRUE	counted in all-cause	L/R
+L1	299	TRUE	general prion endpoint	TRUE	counted in all-cause	L/R
+L2	294	TRUE	general prion endpoint	TRUE	counted in all-cause	L/R
+L3	1	FALSE	surgical complications	FALSE	within one day post-surgery	
+L4	287	TRUE	general prion endpoint	TRUE	counted in all-cause	L/R
+M1	315	FALSE	intercurrent / other	FALSE	never developed disease	L/R
+M2	315	FALSE	intercurrent / other	FALSE	never developed disease	L/R
+M3	315	FALSE	intercurrent / other	FALSE	never developed disease	none
+M4	315	FALSE	intercurrent / other	FALSE	never developed disease	none
+N1	315	FALSE	intercurrent / other	FALSE	never developed disease	L/R
+N2	315	FALSE	intercurrent / other	FALSE	never developed disease	L/R
+N3	315	FALSE	intercurrent / other	FALSE	never developed disease	none
+N4	315	FALSE	intercurrent / other	FALSE	never developed disease	none
+O1	0	FALSE	intercurrent / other	FALSE	never developed disease	none
+O2	315	FALSE	intercurrent / other	FALSE	never developed disease	L/R
+O3	315	FALSE	intercurrent / other	FALSE	never developed disease	L/R
+O4	315	FALSE	intercurrent / other	FALSE	never developed disease	none
+P1	183	TRUE	general prion endpoint	TRUE	counted in all-cause	whole
+P2	172	TRUE	general prion endpoint	TRUE	counted in all-cause	none
+P3	157	TRUE	general prion endpoint	TRUE	counted in all-cause	none
+P4	170	TRUE	general prion endpoint	TRUE	counted in all-cause	whole
+Q1	159	TRUE	general prion endpoint	TRUE	counted in all-cause	
+Q2	171	TRUE	general prion endpoint	TRUE	counted in all-cause	none
+Q3	139	TRUE	general prion endpoint	TRUE	counted in all-cause	
+Q4	160	TRUE	general prion endpoint	TRUE	counted in all-cause	
+R1	157	TRUE	general prion endpoint	TRUE	counted in all-cause	
+R2	141	TRUE	general prion endpoint	TRUE	counted in all-cause	
+R3	155	TRUE	general prion endpoint	TRUE	counted in all-cause	
+R4	155	TRUE	general prion endpoint	TRUE	counted in all-cause	
+S1	314	FALSE	intercurrent / other	FALSE	never developed disease	L/R
+S2	314	FALSE	intercurrent / other	FALSE	never developed disease	L/R
+S3	314	FALSE	intercurrent / other	FALSE	never developed disease	none
+S4	314	FALSE	intercurrent / other	FALSE	never developed disease	none
+T1	168	TRUE	general prion endpoint	TRUE	counted in all-cause	whole
+T2	166	TRUE	general prion endpoint	TRUE	counted in all-cause	whole
+T3	156	TRUE	general prion endpoint	TRUE	counted in all-cause	none
+T4	0	FALSE	intercurrent / other	FALSE	experimental error or complication	
+U1	171	TRUE	general prion endpoint	TRUE	counted in all-cause	none
+U2	182	TRUE	general prion endpoint	TRUE	counted in all-cause	whole
+U3	205	TRUE	general prion endpoint	TRUE	counted in all-cause	none
+U4	0	FALSE	surgical complications	FALSE	within one day post-surgery	
+LA1	147	TRUE	intercurrent / other	FALSE	pre-specified comparator	
+LA2	147	TRUE	intercurrent / other	FALSE	pre-specified comparator	
+LA3	132	TRUE	general prion endpoint	TRUE	counted in all-cause	L/R
+LA4	147	TRUE	intercurrent / other	FALSE	pre-specified comparator	
+LB1	137	TRUE	found dead	TRUE	counted in all-cause	
+LB2	132	TRUE	intercurrent / other	TRUE	counted in all-cause	L/R
+LB3	138	TRUE	general prion endpoint	TRUE	counted in all-cause	none
+LB4	147	TRUE	intercurrent / other	FALSE	pre-specified comparator	
+LC1	147	TRUE	intercurrent / other	FALSE	pre-specified comparator	
+LC2	129	TRUE	found dead	TRUE	counted in all-cause	L/R
+LC3	129	TRUE	general prion endpoint	TRUE	counted in all-cause	L/R+organs
+LC4	130	TRUE	general prion endpoint	TRUE	counted in all-cause	L/R
+LD1	129	TRUE	general prion endpoint	TRUE	counted in all-cause	L/R+organs
+LD2	147	TRUE	intercurrent / other	FALSE	pre-specified comparator	L/R
+LD3	147	TRUE	intercurrent / other	FALSE	pre-specified comparator	L/R
+LD4	129	TRUE	general prion endpoint	TRUE	counted in all-cause	L/R+organs
+LE1	147	TRUE	intercurrent / other	FALSE	pre-specified comparator	
+LE2	147	TRUE	intercurrent / other	FALSE	pre-specified comparator	
+LE3	143	TRUE	moribund	TRUE	counted in all-cause	L/R
+LE4	147	TRUE	intercurrent / other	FALSE	pre-specified comparator	
+LF1	6	FALSE	intercurrent / other	FALSE	before treatment group assignment	
+LF2	147	TRUE	intercurrent / other	FALSE	pre-specified comparator	
+LF3	147	TRUE	intercurrent / other	FALSE	pre-specified comparator	
+LF4	143	TRUE	general prion endpoint	TRUE	counted in all-cause	L/R
+LG1	127	TRUE	moribund	TRUE	counted in all-cause	L/R
+LG2	121	TRUE	surgical complications	TRUE	within one day post-surgery	L/R
+LG3	121	TRUE	surgical complications	TRUE	within one day post-surgery	L/R
+LG4	121	TRUE	surgical complications	TRUE	within one day post-surgery	
+LH1	128	TRUE	found dead	TRUE	counted in all-cause	
+LH2	128	TRUE	found dead	TRUE	counted in all-cause	
+LH3	147	TRUE	intercurrent / other	FALSE	pre-specified comparator	
+LH4	147	TRUE	intercurrent / other	FALSE	pre-specified comparator	
+LI1	147	TRUE	intercurrent / other	FALSE	pre-specified comparator	
+LI2	143	TRUE	general prion endpoint	TRUE	counted in all-cause	L/R
+LI3	147	TRUE	intercurrent / other	FALSE	pre-specified comparator	
+LI4	147	TRUE	intercurrent / other	FALSE	pre-specified comparator	
+LJ1	147	TRUE	intercurrent / other	FALSE	pre-specified comparator	
+LJ2	133	TRUE	found dead	TRUE	counted in all-cause	
+LJ3	147	TRUE	intercurrent / other	FALSE	pre-specified comparator	
+LJ4	147	TRUE	intercurrent / other	FALSE	pre-specified comparator	
+LK1	147	TRUE	intercurrent / other	FALSE	pre-specified comparator	
+LK2	147	TRUE	intercurrent / other	FALSE	pre-specified comparator	
+LK3	147	TRUE	intercurrent / other	FALSE	pre-specified comparator	
+LK4	128	TRUE	moribund	TRUE	counted in all-cause	L/R
+LL1	129	TRUE	found dead	TRUE	counted in all-cause	L/R
+LL2	129	TRUE	found dead	TRUE	counted in all-cause	L/R
+LL3	128	TRUE	moribund	TRUE	counted in all-cause	L/R
+LL4	129	TRUE	moribund	TRUE	counted in all-cause	L/R
+PA1	150	TRUE	general prion endpoint	TRUE	counted in all-cause	L/R
+PA2	157	TRUE	general prion endpoint	TRUE	counted in all-cause	L/R
+PA3	165	TRUE	general prion endpoint	TRUE	counted in all-cause	L/R
+PA4	156	TRUE	general prion endpoint	TRUE	counted in all-cause	L/R
+PB1	NA	FALSE	found dead	NA	before treatment group assignment	
+PB2	120	FALSE	intercurrent / other	NA	pre-specified comparator	
+PB3	120	FALSE	intercurrent / other	NA	pre-specified comparator	
+PB4	120	FALSE	intercurrent / other	NA	pre-specified comparator	
+PC1	166	TRUE	found dead	TRUE	counted in all-cause	none
+PC2	150	TRUE	general prion endpoint	TRUE	counted in all-cause	L/R
+PC3	172	TRUE	general prion endpoint	TRUE	counted in all-cause	L/R
+PC4	148	TRUE	general prion endpoint	TRUE	counted in all-cause	?
+PD1	120	FALSE	surgical complications	FALSE	within one day post-surgery	
+PD2	120	FALSE	surgical complications	FALSE	within one day post-surgery	
+PD3	134	TRUE	general prion endpoint	TRUE	counted in all-cause	
+PD4	120	FALSE	surgical complications	FALSE	within one day post-surgery	
+PE1	277	TRUE	general prion endpoint	TRUE	counted in all-cause	none
+PE2	207	TRUE	found dead	TRUE	counted in all-cause	none
+PE3	270	TRUE	general prion endpoint	TRUE	counted in all-cause	L/R
+PE4	277	TRUE	general prion endpoint	TRUE	counted in all-cause	none
+PF1	88	FALSE	intercurrent / other	NA	before treatment group assignment	
+PF2	88	FALSE	intercurrent / other	NA	before treatment group assignment	
+PF3	88	FALSE	intercurrent / other	NA	before treatment group assignment	
+PF4	88	FALSE	intercurrent / other	NA	before treatment group assignment	
+PG1	165	TRUE	general prion endpoint	TRUE	counted in all-cause	L/R
+PG2	165	TRUE	general prion endpoint	TRUE	counted in all-cause	L/R
+PG3	165	TRUE	general prion endpoint	TRUE	counted in all-cause	L/R
+PG4	165	TRUE	general prion endpoint	TRUE	counted in all-cause	L/R
+PH1	136	TRUE	general prion endpoint	TRUE	counted in all-cause	
+PH2	138	TRUE	found dead	TRUE	counted in all-cause	
+PH3	227	TRUE	found dead	TRUE	counted in all-cause	
+PH4	270	TRUE	general prion endpoint	TRUE	counted in all-cause	L/R
+PI1	168	TRUE	general prion endpoint	TRUE	counted in all-cause	L/R
+PI2	157	TRUE	general prion endpoint	TRUE	counted in all-cause	L/R
+PI3	172	TRUE	found dead	TRUE	counted in all-cause	
+PI4	172	TRUE	general prion endpoint	TRUE	counted in all-cause	L/R
+PJ1	172	TRUE	general prion endpoint	TRUE	counted in all-cause	L/R
+PJ2	150	TRUE	general prion endpoint	TRUE	counted in all-cause	L/R
+PJ3	148	TRUE	general prion endpoint	TRUE	counted in all-cause	?
+PJ4	172	TRUE	general prion endpoint	TRUE	counted in all-cause	L/R
+PK1	144	TRUE	general prion endpoint	TRUE	counted in all-cause	L/R
+PK2	120	FALSE	surgical complications	FALSE	within one day post-surgery	
+PK3	132	TRUE	found dead	TRUE	counted in all-cause	
+PK4	144	TRUE	general prion endpoint	TRUE	counted in all-cause	L/R
+PL1	277	TRUE	general prion endpoint	TRUE	counted in all-cause	L/R
+PL2	277	TRUE	general prion endpoint	TRUE	counted in all-cause	L/R
+PL3	277	TRUE	general prion endpoint	TRUE	counted in all-cause	L/R
+PL4	277	TRUE	general prion endpoint	TRUE	counted in all-cause	L/R

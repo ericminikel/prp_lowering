@@ -1,0 +1,7 @@
+cohort	color	lty
+uninfected	#AAAAAA	3
+pre-treatment	#FF2017	1
+saline	#5C5C5C	1
+active ASO 1	#0909FF	1
+active ASO 2	#09C009	1
+control ASO 3	#4F2F0F	1

@@ -1,0 +1,25 @@
+cohort	cage	dpi	nstg	erch	comb
+uninoculated	400-403	90	2	2	2
+uninoculated	400-403	120	2	2	2
+uninoculated	400-403	150	2	2	2
+uninoculated	400-403	180	2	2	2
+uninoculated	404-407	90	2	2	2
+uninoculated	404-407	120	2	2	2
+uninoculated	404-407	150	2	2	2
+uninoculated	404-407	180	2	2	2
+uninoculated	408-411	90	2	2	2
+uninoculated	408-411	120	1	2	1.5
+uninoculated	408-411	150	2	2	2
+uninoculated	408-411	180	2	2	2
+RML	426,27,30,31	90	1	2	1.5
+RML	426,27,30,31	120	0	1	0.5
+RML	426,27,30,31	150	0	1	0.5
+RML	426,27,30,31	180			
+RML	232-34,37	90	2	2	2
+RML	232-34,37	120	1	1	1
+RML	232-34,37	150	0	1	0.5
+RML	232-34,37	180			
+RML	438-40, 42	90	2	1	1.5
+RML	438-40, 42	120	0	1	0.5
+RML	438-40, 42	150	0	1	0.5
+RML	438-40, 42	180	0	1	0.5

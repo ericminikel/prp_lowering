@@ -1,0 +1,51 @@
+animal	category	censored	lifespan	inoculation_date	death_date	comment	dpi	prion_endpoint	acm	treatment
+55684	uninoculated	1	255	8/25/17	5/7/18		255	0	0	uninfected
+55704	uninoculated	1	255	8/25/17	5/7/18		255	0	0	uninfected
+55705	uninoculated	1	255	8/25/17	5/7/18		255	0	0	uninfected
+55713	uninoculated	1	255	8/25/17	5/7/18		255	0	0	uninfected
+55739	uninoculated	1	255	8/25/17	5/7/18		255	0	0	uninfected
+55771/2	uninoculated	1	255	8/25/17	5/7/18		255	0	0	uninfected
+55679	clean brain	1	255	8/25/17	5/7/18		255	0	0	uninfected
+55680	clean brain	1	255	8/25/17	5/7/18		255	0	0	uninfected
+55710	clean brain	0	203	8/25/17	3/16/18		203	0	1	uninfected
+55711	clean brain	1	255	8/25/17	5/7/18		255	0	0	uninfected
+55712	clean brain	1	255	8/25/17	5/7/18		255	0	0	uninfected
+55727	clean brain	1	255	8/25/17	5/7/18		255	0	0	uninfected
+55770	clean brain	1	255	8/25/17	5/7/18		255	0	0	uninfected
+55773	clean brain	1	255	8/25/17	5/7/18		255	0	0	uninfected
+55693	saline	0	139	8/25/17	1/11/18		139	1	1	saline
+55695	saline	0	160	8/25/17	2/1/18		160	1	1	saline
+55722	saline	0	164	8/25/17	2/5/18		164	1	1	saline
+55725	saline	1	101	8/25/17	12/4/17	sac'ed as control before sick	101	0	0	saline
+55737	saline	0	139	8/25/17	1/11/18		139	1	1	saline
+55747	saline	0	160	8/25/17	2/1/18		160	1	1	saline
+55761	saline	0	166	8/25/17	2/7/18		166	1	1	saline
+55764	saline	0	171	8/25/17	2/12/18		171	1	1	saline
+55772	saline	0	151	8/25/17	1/23/18		151	1	1	saline
+55688	control ASO 3	0	150	8/25/17	1/22/18		150	1	1	control ASO 3
+55690	control ASO 3	1	92	8/25/17	11/25/17		92	0	1	control ASO 3
+55696	control ASO 3	0	150	8/25/17	1/22/18		150	1	1	control ASO 3
+55735	control ASO 3	1	92	8/25/17	11/25/17		92	0	1	control ASO 3
+55738	control ASO 3	1	92	8/25/17	11/25/17		92	0	1	control ASO 3
+55753	control ASO 3	1	92	8/25/17	11/25/17		92	0	1	control ASO 3
+55762	control ASO 3	0	167	8/25/17	2/8/18		167	1	1	control ASO 3
+55763	control ASO 3	1	94	8/25/17	11/27/17		94	0	1	control ASO 3
+55765	control ASO 3	1	92	8/25/17	11/25/17		92	0	1	control ASO 3
+55682	active ASO 1	0	234	8/25/17	4/16/18		234	1	1	active ASO 1
+55687	active ASO 1	1	101	8/25/17	12/4/17		101	0	1	active ASO 1
+55689	active ASO 1	1	102	8/25/17	12/5/17		102	0	1	active ASO 1
+55726	active ASO 1	0	252	8/25/17	5/4/18		252	1	1	active ASO 1
+55736	active ASO 1	0	232	8/25/17	4/16/18		234	1	1	active ASO 1
+55748	active ASO 1	0	254	8/25/17	5/6/18		254	1	1	active ASO 1
+55860	active ASO 1	0	202	8/25/17	3/15/18		202	1	1	active ASO 1
+55861	active ASO 1	0	244	8/25/17	4/26/18		244	1	1	active ASO 1
+55864	active ASO 1	0	223	8/25/17	4/5/18		223	1	1	active ASO 1
+55683	active ASO 2	1	94	8/25/17	11/27/17		94	0	1	active ASO 2
+55686	active ASO 2	1	92	8/25/17	11/25/17		92	0	1	active ASO 2
+55697	active ASO 2	1	92	8/25/17	11/25/17		92	0	1	active ASO 2
+55723	active ASO 2	1	92	8/25/17	11/25/17		92	0	1	active ASO 2
+55724	active ASO 2	1	92	8/25/17	11/25/17		92	0	1	active ASO 2
+55734	active ASO 2	1	92	8/25/17	11/25/17		92	0	1	active ASO 2
+55746	active ASO 2	1	92	8/25/17	11/25/17		92	0	1	active ASO 2
+55752	active ASO 2	0	189	8/25/17	3/2/18		189	1	1	active ASO 2
+55769	active ASO 2	1	92	8/25/17	11/25/17		92	0	1	active ASO 2
