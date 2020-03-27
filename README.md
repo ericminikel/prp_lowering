@@ -1,6 +1,6 @@
 This repository holds the code and data for a manuscript in preparation.
 
-**Determinants of efficacy of PrP-lowering therapy in prion-infected mice**
+**Prion protein lowering is a disease-modifying therapy across prion strains, disease stages, and endpoints.**
 
 <a rel="license" href="http://creativecommons.org/licenses/by/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by/4.0/88x31.png" /></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.
 
