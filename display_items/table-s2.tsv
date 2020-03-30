@@ -22,14 +22,14 @@ non-neurological	hunched	1: present, not kyphosis, front and hind feet are close
 shirpa	abnormal gait	1: wobble due to wide hind limb stance
 shirpa	abnormal posture	1: present
 shirpa	abnormal activity level: slow	1: present in home box only 2: no exploring in test box
-shirpa	abnormal activity level: excited	1: moderate (noticed in home box or behavior box) 2: very excited, may include jumping, also includes continuous jumping in corner
+shirpa	abnormal activity level: excited	1: moderate (noticed in home box or behavior box) 2: severe, may include jumping
 shirpa	tail suspension: poor or no splay	1: poor 2: none or abnormally wide
 shirpa	abnormal landing from drop	1: falls on tail or back from bar only (not drop from tail suspension)
 shirpa	abnormal tail elevation	1: present
 shirpa	abnormal pelvic elevation: high	1: present
 shirpa	abnormal pelvic elevation: low	1: present
 shirpa	increased vocalization	1: present
-shirpa	lacks righting reflex	see above
+shirpa	lacks righting reflex	1: lacking
 shirpa	doesn't see bar	1: present
 shirpa	doesn't reach for bar	1: present
 shirpa	no balance on bar	1: moderate: can balance after multiple tries or can only balance a second or two. 2: cannot balance
@@ -38,4 +38,4 @@ shirpa	no leg resistance	1: doesn't react to pressure against paws (zero if any 
 shirpa	no bite reflex	1: poor: notices but doesn't bite 2: no reaction (normal is immediate bite)
 shirpa	delayed hot plate response >5sec	1: longer than 5 seconds
 shirpa	neophobia (freezing)	1: any episode of freezing in test box (vs home box) 2: paralyzing fear
-shirpa	bladder	0: not palpable (np) or good abdominal tone (gt), 1:small or medium 2:large or huge.
+shirpa	bladder	0: not palpable (np) or good abdominal tone (gt), 1: small or medium 2: large or huge.

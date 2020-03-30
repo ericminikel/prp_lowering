@@ -1,5 +1,7 @@
 options(stringsAsFactors=FALSE)
-setwd('~/d/sci/src/determinants/')
+if (interactive()) {
+  setwd('~/d/sci/src/prp_lowering/')
+}
 library(sqldf)
 library(survival)
 library(mratios)
