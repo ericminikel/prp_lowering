@@ -1,4 +1,4 @@
-This repository holds the code and data for a manuscript in preparation.
+This repository holds the code and data for the following manuscript:
 
 [Minikel EV, Zhao HT, Le J, O’Moore J, Pitstick R, Graffam S, Carlson GA, Kriz J, Kim JB, Ma J, Wille H, Aiken J, McKenzie D, Doh-ura K, Beck M, O’Keefe R, Stathopoulos J, Caron T, Schreiber SL, Carroll JB, Kordasiewicz HB, Cabin DE, Vallabh SM. **Prion protein lowering is a disease-modifying therapy across prion strains, disease stages, and endpoints.** *bioRxiv.* 2020 Mar 29;2020.03.27.011940.](https://doi.org/10.1101/2020.03.27.011940)
 
