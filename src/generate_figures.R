@@ -6,6 +6,7 @@ library(sqldf)
 library(survival)
 library(mratios)
 library(drc)
+library(reshape2)
 
 imgmode = 'png'
 # imgmode = 'pdf'
@@ -26,6 +27,12 @@ percent = function(proportion,digits=2) {
   return ( gsub(' ','',paste(formatC(proportion*100, digits=digits, format='fg'),"%",sep="") ) )
 }
 
+signed_percent = function(proportion,digits=2) {
+  result = gsub(' ','',paste(ifelse(proportion > 0, '+', ''),round(proportion*100,0),"%",sep="") )
+  result[is.na(proportion)] = '-'
+  return ( result )
+}
+
 alpha = function(rgb_hexcolor, proportion) {
   hex_proportion = sprintf("%02x",round(proportion*255))
   rgba = paste(rgb_hexcolor,hex_proportion,sep='')
@@ -42,6 +49,42 @@ calculate_ci = function(df) {
   df$u95 = df[,mean_col] + 1.96*df[,sd_col]/sqrt(df[,n_col])
   return (df)
 }
+
+# add semi-transparent polygon confidence intervals to a survival fit plot
+add_surv_confint = function(survfitobj) {
+  if (is.null(survfitobj$strata)) {
+    survfitobj$strata = length(survfitobj$time)
+    names(survfitobj$strata)='only'
+  }
+  survfitobj$cohidx = integer(sum(survfitobj$strata))
+  start_index = 1
+  # add annotation of which lower/upper values, times, n.event, etc. refer to which cohortt
+  for (i in 1:length(names(survfitobj$strata))) {
+    indices = start_index:(start_index+survfitobj$strata[i]-1)
+    survfitobj$cohidx[indices] = i
+    start_index = start_index + survfitobj$strata[i]
+  }
+  # now add to plot
+  for (i in 1:length(names(survfitobj$strata))) {
+    indices = survfitobj$cohidx == i
+    ci = data.frame(time=survfitobj$time[indices],lower=survfitobj$lower[indices],upper=survfitobj$upper[indices],surv=survfitobj$surv[indices])
+    ci$lower[ci$surv==0] = ci$upper[ci$surv==0] = 0
+    non_missing_ci = ci[!is.na(ci$lower) & !is.na(ci$upper),]
+    for (j in 2:nrow(ci)) {
+      rect(xleft=ci$time[j-1], xright=ci$time[j], ybottom=ci$lower[j-1], ytop=ci$upper[j-1], col=alpha(survfitobj$color[i],ci_alpha), border=NA)
+    }
+    #polygon(x=c(non_missing_ci$time, rev(non_missing_ci$time)), y=c(non_missing_ci$lower, rev(non_missing_ci$upper)), col=alpha(survfitobj$color[i],ci_alpha), border=NA)
+  }
+}
+
+# test for violation of proportional hazards assumption
+# see https://www.rdocumentation.org/packages/survival/versions/3.1-11/topics/cox.zph
+# and Grambsch & Therneau 1994 https://doi.org/10.1093/biomet/81.3.515
+zph_p = function(coxphmodel) {
+  zph_model = suppressWarnings(cox.zph(coxphmodel))
+  return (zph_model$table[1,'p'])
+}
+
 
 default_lwd = 3
 strain_lwd = 1.5
@@ -173,86 +216,346 @@ n$lty = params$lty[match(n$cohort, params$cohort)]
 
 
 
-#### FIGURE S1: potency and time-to-effect
-imgsave(paste('display_items/figure-s1.',imgmode,sep=''),width=6.5*resx,height=6.5*resx,res=resx)
 
-layout_matrix = matrix(c(1,2,3,4,5,6,7,7),nrow=4,byrow=T)
-layout(layout_matrix,heights=c(1.5,1,1,.2))
+
+
+
+#### FIGURE 1: ionis screening data
+
+imgsave(paste('display_items/figure-1.',imgmode,sep=''),width=6.5*resx,height=8*resx,res=resx)
+
+#layout_matrix = matrix(c(1,1,1,2,2,2,3,4,5,6,7,8,9,10,11,12,12,12),nrow=6,byrow=T)
+#layout(layout_matrix, heights=c(.5,1,1,1,1,.2), widths=c(1.5,1,1))
+
+layout_matrix = matrix(c(1,1,1,1,1,1,1,1,1,1,1,1,
+                         2,2,2,2,2,2,2,2,2,2,2,2,
+                         3,3,3,4,4,4,5,5,5,5,5,5,
+                         6,6,6,7,7,7,8,9,10,11,12,13),nrow=4,byrow=T)
+layout(layout_matrix, heights=c(.5,1,1,1), widths=c(2,2,2, 1,1,1, 1,1,1, 1,1,1))
 
 panel = 1
 
-potency = read.table('data/ionis/potency_screening.tsv',sep='\t',header=T)
-psmry = sqldf("select   region, treatment, panel, x, avg(mrna) mean_mrna, stdev(mrna) sd_mrna, count(*) n_mrna
-              from     potency
-              group by 1, 2, 3, 4
-              order by 3, 4;
-              ")
-psmry = calculate_ci(psmry)
-psmry$color = params$color[match(psmry$treatment,params$display)]
-psmry$y = 7-psmry$x
-potency$y = 7-potency$x
-set.seed(1)
-potency$yjit = jitter(potency$y, amount=.25)
-potency$color = params$color[match(potency$treatment,params$display)]
-xlims=c(0,1.5)
-ylims=range(psmry$y) + c(-0.5,0.5)
+in_vitro_default_color = '#D9D9D9'
+in_vitro_hit_color = '#BC9999'
 
-par(mar=c(4,8,4,1))
-for (pnl in unique(psmry$panel)) {
-  rows = psmry$panel == pnl
-  plot(NA,NA,xlim=xlims,ylim=ylims,xaxs='i',yaxs='i',ann=FALSE,axes=FALSE)
-  axis(side=1, at=(0:4)/4, labels=percent((0:4)/4), lwd=1, lwd.ticks=1)
-  axis(side=2, at=ylims, labels=NA, lwd.ticks=0)
-  mtext(side=2, at=psmry$y[rows], text=psmry$treatment[rows], col=psmry$color[rows], las=2, line=0.25)
-  abline(v=1, lty=3)
-  raw_rows = potency$panel == pnl
-  points(x=potency$mrna[raw_rows], y=potency$yjit[raw_rows], pch=19, col=alpha(potency$color[raw_rows], ci_alpha))
-  #rect(xleft=rep(0,sum(rows)), xright=psmry$mean_mrna[rows], ytop=psmry$y[rows]+0.33, ybottom=psmry$y[rows]-0.33, col=psmry$color, border=NA)
-  segments(x0=psmry$mean_mrna[rows], y0=psmry$y[rows]+0.33, y1=psmry$y[rows]-0.33, lwd=1, col=psmry$color[rows])
-  arrows(x0=psmry$l95[rows], x1=psmry$u95[rows], y0=psmry$y[rows], y1=psmry$y[rows], angle=90, length=0.035, code=3, lwd=1, col=psmry$color[rows])
-  mtext(side=3, at=.5, line=0.5, text=psmry$region[rows][1])
-  mtext(side=1, at=.5, line=2.5, text='mRNA (% saline)')
-  mtext(LETTERS[panel], side=3, cex=2, adj = -0.5, line = 0.5)
-  panel = panel + 1
+in_vitro = read.table('data/ionis/in_vitro.tsv',sep='\t',header=T)
+in_vitro$mean = in_vitro$utc_pct/100
+in_vitro$sd = in_vitro$sd_pct/100
+in_vitro$sem = in_vitro$sd / sqrt(in_vitro$n)
+in_vitro$l95 = in_vitro$mean - 1.96*in_vitro$sem
+in_vitro$u95 = in_vitro$mean + 1.96*in_vitro$sem
+in_vitro$x = 1:nrow(in_vitro)
+in_vitro$color = in_vitro_default_color
+in_vitro$color[in_vitro$u95 < 1] = in_vitro_hit_color
+in_vitro$color[in_vitro$name == 'active ASO 1'] = params$color[params$display=='active ASO 1'][1]
+in_vitro$color[in_vitro$name == 'active ASO 2'] = params$color[params$display=='active ASO 2'][1]
+sum(in_vitro$mean < 1)
+mean(in_vitro$mean < 1)
+sum(in_vitro$u95 < 1)
+mean(in_vitro$u95 < 1)
+rank(in_vitro$mean)[callouts]
+
+
+xlims = range(in_vitro$x) + c(-20, 20)
+xats = c(1, seq(100,floor(nrow(in_vitro)/100)*100,100), nrow(in_vitro))
+ylims = c(0, 1.5)
+par(mar=c(3,5,3,3))
+plot(NA, NA, xlim=xlims, ylim=ylims, xaxs='i', yaxs='i', ann=F, axes=F)
+axis(side=1, at=xlims, labels=c("5'","3'"), lwd.ticks=0, font=2, cex.axis=1.2)
+axis(side=1, at=xats, labels=NA, lwd=0, lwd.ticks=1)
+axis(side=1, at=xats, lwd=0, line=-0.5)
+axis(side=2, at=0:6/4, labels=percent(0:6/4), las=2)
+abline(h=1, lty=2)
+mtext(side=1, line=2, text='candidate number')
+mtext(side=2, line=3, text='residual', cex=0.9)
+rect(xleft=in_vitro$x-0.4,xright=in_vitro$x+0.4,ybottom=rep(0,nrow(in_vitro)),ytop=in_vitro$mean,col=in_vitro$color,border=NA)
+callouts = in_vitro$name %in% c('active ASO 1','active ASO 2')
+rect(xleft=in_vitro$x[callouts]-1.5,xright=in_vitro$x[callouts]+1.5,ybottom=rep(0,sum(callouts)),ytop=in_vitro$mean[callouts],col=in_vitro$color[callouts],border=NA)
+segments(x0=in_vitro$x,y0=in_vitro$l95,y1=in_vitro$u95,col='black',lwd=0.125)
+arrows(x0=in_vitro$x[callouts], y0=1, y1=max(ylims), code=1, lwd=3, col=in_vitro$color[callouts], length=0.05, angle=30)
+mtext(side=3,line=1,at=in_vitro$x[callouts],col=in_vitro$color[callouts],text=in_vitro$name[callouts])
+mtext(side=3,line=0,at=in_vitro$x[callouts],col=in_vitro$color[callouts],text=percent(in_vitro$mean[callouts],digits=0))
+par(xpd=T)
+legend(x=160, y=3, horiz=T, legend=c('hit','non-hit'), col=c(in_vitro_hit_color, in_vitro_default_color), lwd=3, bty='n', cex=1.2)
+par(xpd=F)
+mtext(LETTERS[panel], side=3, cex=2, adj = 0.0, line = 0.5)
+panel = panel + 1
+aso5_region_start = 131914292
+aso5_region_seq = 'TTAACTCTGGATTATTTGGATAGAATTGCAATCTCTTATATT'
+aso5_region_end = aso5_region_start + nchar(aso5_region_seq)+ 10
+aso5_mid = aso5_region_start + nchar(aso5_region_seq)/2
+
+aso6_region_start = 131938395
+aso6_region_seq = 'CTATCAGACTGACATTAAATAGAAGCTATG'
+aso6_region_end = aso6_region_start + nchar(aso6_region_seq) + 10
+aso6_mid = aso6_region_start + nchar(aso6_region_seq)/2
+
+moe_color = '#E46C0A'
+cet_color = '#0070C0'
+dna_color = '#777777'
+bbone_color = '#A9A9A9'
+
+ydiagram = 0.1
+ycallout = 0.25
+
+revstring = function(x) {
+  return (paste0(rev(strsplit(x,'')[[1]]), collapse=''))
 }
 
-par(mar=c(4,5,3,1))
+subtractseq = function(sequence, mask, matchchar) {
+  sequence_chars = strsplit(sequence, '')[[1]]
+  mask_chars = strsplit(mask, '')[[1]]
+  indices = mask_chars != matchchar
+  sequence_chars[indices] = ' '
+  return (paste(sequence_chars, collapse=''))
+}
+
+interpolate_spaces = function(x, char=' ') {
+  xchars = strsplit(x, '')[[1]]
+  interpx = paste0(xchars, rep(' ',length(xchars)), collapse='')
+  return (interpx)
+}
+
+candidates = read.table('data/ionis/candidate_walk.tsv',sep='\t',header=T,quote='',comment.char='')
+candidates$y = ycallout + c(seq(0.5,0.1,-0.1), c(0.2, 0.1))*.75
+candidates$region_start = c(rep(aso5_region_start,5), rep(aso6_region_start,2))
+candidates$region_end = c(rep(aso5_region_end,5), rep(aso6_region_end,2))
+candidates$region_mid = c(rep(aso5_mid,5), rep(aso6_mid,2))
+candidates$rstart = candidates$region_start + candidates$region_end - candidates$start - nchar(candidates$seq) - 6
+candidates$rseq = revstring(candidates$seq)
+
+
+for (i in 1:nrow(candidates)) {
+  candidates$padseq[i] = paste(c(rep(' ',candidates$rstart[i]-candidates$region_start[i]), candidates$seq[i], rep(' ',candidates$region_end[i]-candidates$rstart[i]-nchar(candidates$seq[i]))), collapse='')
+  candidates$padchem[i] = paste(c(rep(' ',candidates$rstart[i]-candidates$region_start[i]), candidates$chem[i], rep(' ',candidates$region_end[i]-candidates$rstart[i]-nchar(candidates$seq[i]))), collapse='')
+  candidates$padbbone[i] = paste(c(rep(' ',candidates$rstart[i]-candidates$region_start[i]), candidates$bbone[i], rep(' ',candidates$region_end[i]-candidates$rstart[i]-nchar(candidates$seq[i])+1)), collapse='')
+  candidates$padbbone2x[i] = interpolate_spaces(candidates$padbbone[i])
+  
+  candidates$moeseq[i] = subtractseq(candidates$padseq[i], candidates$padchem[i], 'e')
+  candidates$dnaseq[i] = subtractseq(candidates$padseq[i], candidates$padchem[i], 'd')
+  candidates$cetseq[i] = subtractseq(candidates$padseq[i], candidates$padchem[i], 'k')
+  
+  #candidates$pad5mc2x[i] = interpolate_spaces(gsub('C','m',gsub('[AGT]',' ',candidates$padseq[i])))
+  candidates$pad5mc2x_moe[i] = interpolate_spaces(gsub('C','m',gsub('[AGT]',' ',subtractseq(candidates$padseq[i], candidates$padchem[i], 'e'))))
+  candidates$pad5mc2x_dna[i] = interpolate_spaces(gsub('C','m',gsub('[AGT]',' ',subtractseq(candidates$padseq[i], candidates$padchem[i], 'd'))))
+  candidates$pad5mc2x_cet[i] = interpolate_spaces(gsub('C','m',gsub('[AGT]',' ',subtractseq(candidates$padseq[i], candidates$padchem[i], 'k'))))
+}
+
+
+prnp_enst = 'ENSMUST00000091288.12'
+prnp_anno = read.table('data/misc/ENSMUST00000091288.csv',sep='\t',header=T)
+xlims = c(floor(min(prnp_anno$start/1e3)-9)*1e3, ceiling(max(prnp_anno$end/1e3)+11)*1e3)
+xats = seq(floor(min(prnp_anno$start/1e4)-1)*1e4, ceiling(max(prnp_anno$end/1e4)+1)*1e4, 1e4)
+xats_small = seq(min(xlims), max(xlims), 1e3)
+ylims = c(0,.725)
+text_cex=1
+
+par(mar=c(4,4,3,4))
+plot(NA, NA, xlim=xlims, ylim=ylims, xaxs='i', yaxs='i', ann=F, axes=F)
+axis(side=1, at=xats, labels=NA)
+axis(side=1, at=xats, labels=formatC(xats,big.mark=',',format='d'), lwd=0, line=-0.5)
+axis(side=1, at=xats_small, labels=NA, tck=-0.025)
+mtext(side=1, line=1.75, text='genomic position (GRCm38 chromosome 2)', cex=0.8)
+segments(x0=prnp_anno$start, x1=prnp_anno$end, y0=ydiagram, lwd=prnp_anno$lwd*2, lend=1)
+arrows(x0=aso5_mid, y0=ydiagram*1.4, y1=ycallout, angle=90, code=2, length=0.5, col='#A9A9A9', lwd=2)
+arrows(x0=aso5_mid, y0=ydiagram*1.4, y1=ycallout, angle=45, code=1, length=0.025, col='#A9A9A9', lwd=2)
+arrows(x0=aso6_mid, y0=ydiagram*1.4, y1=ycallout, angle=90, code=2, length=0.5, col='#A9A9A9', lwd=2)
+arrows(x0=aso6_mid, y0=ydiagram*1.4, y1=ycallout, angle=45, code=1, length=0.025, col='#A9A9A9', lwd=2)
+text(x=aso5_mid, y=ycallout*1.1, pos=3, labels=aso5_region_seq, cex=text_cex, family='mono', font=1, srt=180)
+text(x=aso6_mid, y=ycallout*1.1, pos=3, labels=aso6_region_seq, cex=text_cex, family='mono', font=1, srt=180)
+text(x=candidates$region_mid, y=candidates$y, pos=3, labels=candidates$moeseq, cex=text_cex, family='mono', font=2, col=moe_color)
+text(x=candidates$region_mid, y=candidates$y, pos=3, labels=candidates$dnaseq, cex=text_cex, family='mono', font=2, col=dna_color)
+text(x=candidates$region_mid, y=candidates$y, pos=3, labels=candidates$cetseq, cex=text_cex, family='mono', font=2, col=cet_color)
+text(x=candidates$region_mid+450, y=candidates$y-.015, pos=3, labels=candidates$padbbone2x, cex=text_cex/2, family='mono', font=1, col=bbone_color)
+text(x=candidates$region_mid+150, y=candidates$y+.037, pos=3, labels=candidates$pad5mc2x_moe, cex=text_cex/2, family='mono', font=1, col=moe_color)
+text(x=candidates$region_mid+150, y=candidates$y+.037, pos=3, labels=candidates$pad5mc2x_dna, cex=text_cex/2, family='mono', font=1, col=dna_color)
+text(x=candidates$region_mid+150, y=candidates$y+.037, pos=3, labels=candidates$pad5mc2x_cet, cex=text_cex/2, family='mono', font=1, col=cet_color)
+par(xpd=T)
+text(x=candidates$region_mid[candidates$region==1] - 1.3e4, y=candidates$y[candidates$region==1], labels=candidates$name[candidates$region==1], pos=3, cex=text_cex, col=candidates$color[candidates$region==1])
+text(x=candidates$region_mid[candidates$region==2] + 1.0e4, y=candidates$y[candidates$region==2], labels=candidates$name[candidates$region==2], pos=3,   cex=text_cex, col=candidates$color[candidates$region==2])
+legend(x=131943000, y=max(ylims)*1.25,legend=c("2'MOE","2'-4'cEt","2'H"),col=c(moe_color, cet_color, dna_color),text.col=c(moe_color, cet_color, dna_color),pch=15,title="sugar modification",title.col='black',bty='n',cex=0.9)
+legend(x=131931500, y=max(ylims)*1.25,legend=c("phosphorothioate (PS)","phosphodiester (PO)"),col=c(bbone_color,bbone_color),pch=c('s','o'),title='backbone linkage',title.col='black',bty='n',cex=0.9)
+legend(x=131932500, y=max(ylims)*0.95,legend=c("5-methylcytosine"),col=c(bbone_color),pch=c('m'),title='base modification',title.col='black',bty='n',cex=0.9)
+rect(xleft=131931500, xright=131952000, ybottom=.50, ytop=max(ylims)*1.25)
+par(xpd=F)
+mtext(LETTERS[panel], side=3, cex=2, adj = 0.0, line = 0.5)
+panel = panel + 1
+
+candidate_in_vivo = read.table('data/ionis/candidate_in_vivo_700ug_8wk.tsv',sep='\t',header=T,comment.char='',quote='')
+
+markers = melt(candidate_in_vivo[,c('treatment','cortex_prnp_pct','cord_prnp_pct')])
+markers$value = markers$value / 100
+markers$y = rep(rep(6:1,each=4),2)
+markers$color = candidates$color[match(markers$treatment,candidates$name)]
+markers$color[markers$treatment=='saline'] = params$color[params$display=='saline'][1]
+
+candidate_in_vivo$color = markers$color[match(candidate_in_vivo$treatment, markers$treatment)]
+
+msmry = sqldf("
+              select   y, color, treatment, variable, avg(value) mean, stdev(value) sd, sum(case when value is not null then 1 else 0 end) n
+              from     markers m
+              group by 1, 2, 3, 4
+              order by 1, 2, 3, 4
+              ;")
+
+msmry$l95 = msmry$mean - 1.96 * msmry$sd / sqrt(msmry$n)
+msmry$u95 = msmry$mean + 1.96 * msmry$sd / sqrt(msmry$n)
+
+markers$pch = 20
+markers$pch[markers$value > 1.5] = 17
+markers$value[markers$value > 1.5] = 1.5
+
+msmry$display = msmry$treatment
+
+ylabs = sqldf("select y, treatment, color from msmry group by 1, 2, 3 order by 1 desc;")
+
+xlims = c(0,1.25)
+ylims = range(msmry$y) + c(-0.5, 0.5)
+
+par(mar=c(5,10,3,1))
+plot(NA, NA, xlim=xlims, ylim=ylims, xaxs='i', yaxs='i', ann=FALSE, axes=FALSE)
+axis(side=1,at=(0:4)/4,labels=percent((0:4)/4))
+axis(side=2, at=ylims, labels=NA, lwd.ticks=0)
+mtext(side=2, line=0.25, at=ylabs$y, text=ylabs$treatment, col=ylabs$color, las=2)
+mtext(side=1, line=2, text='residual', cex=0.9)
+abline(v=1,lwd=1,lty=3)
+points(x=markers$value[markers$variable=='cortex_prnp_pct'], y=markers$y[markers$variable=='cortex_prnp_pct'], col=markers$color[markers$variable=='cortex_prnp_pct'], lwd=0, pch=markers$pch[markers$variable=='cortex_prnp_pct'])
+arrows(y0=msmry$y[msmry$variable=='cortex_prnp_pct'], x0=msmry$l95[msmry$variable=='cortex_prnp_pct'], x1=msmry$u95[msmry$variable=='cortex_prnp_pct'], angle=90, length=0.03, code=3, lwd=1, col=msmry$color[msmry$variable=='cortex_prnp_pct'])
+segments(y0=msmry$y[msmry$variable=='cortex_prnp_pct']-.25, y1=msmry$y[msmry$variable=='cortex_prnp_pct']+.25, x0=msmry$mean[msmry$variable=='cortex_prnp_pct'], lwd=1, col=msmry$color[msmry$variable=='cortex_prnp_pct'])
+mtext(side=3, line=0.5, text='cortex', cex=0.9)
+text(x=rep(1.2,sum(msmry$variable=='cortex_prnp_pct')), y=msmry$y[msmry$variable=='cortex_prnp_pct'], labels=msmry$p_symb[msmry$variable=='cortex_prnp_pct'], srt=90)
+mtext(LETTERS[panel], side=3, cex=2, adj = -0.2, line = 0.5)
+panel = panel + 1
+
+par(mar=c(5,1,3,1))
+plot(NA, NA, xlim=xlims, ylim=ylims, xaxs='i', yaxs='i', ann=FALSE, axes=FALSE)
+axis(side=1,at=(0:4)/4,labels=percent((0:4)/4))
+axis(side=2, at=ylims, labels=NA, lwd.ticks=0)
+mtext(side=1, line=2, text='residual', cex=0.9)
+abline(v=1,lwd=1,lty=3)
+points(x=markers$value[markers$variable=='cord_prnp_pct'], y=markers$y[markers$variable=='cord_prnp_pct'], col=markers$color[markers$variable=='cord_prnp_pct'], lwd=0, pch=markers$pch[markers$variable=='cord_prnp_pct'])
+arrows(y0=msmry$y[msmry$variable=='cord_prnp_pct'], x0=msmry$l95[msmry$variable=='cord_prnp_pct'], x1=msmry$u95[msmry$variable=='cord_prnp_pct'], angle=90, length=0.03, code=3, lwd=1, col=msmry$color[msmry$variable=='cord_prnp_pct'])
+segments(y0=msmry$y[msmry$variable=='cord_prnp_pct']-.25, y1=msmry$y[msmry$variable=='cord_prnp_pct']+.25, x0=msmry$mean[msmry$variable=='cord_prnp_pct'], lwd=1, col=msmry$color[msmry$variable=='cord_prnp_pct'])
+mtext(side=3, line=0.5, text='thoracic\ncord', cex=0.9)
+mtext(LETTERS[panel], side=3, cex=2, adj = -0.2, line = 0.5)
+panel = panel + 1
+
+par(mar=c(5,3,3,4))
+plot(NA,NA,xlim=c(0,8),ylim=c(19,30),axes=FALSE,ann=FALSE,xaxs='i',yaxs='i')
+baseline_colno = which(colnames(candidate_in_vivo)=='bw0wk')
+for (i in 1:nrow(candidate_in_vivo)) {
+  points(0:8,candidate_in_vivo[i,baseline_colno:(baseline_colno+8)],type='l',lwd=2,col=candidate_in_vivo$color[i])
+}
+axis(side=1,at=0:8)
+mtext(side=1,at=c(0,8),text=c('surgery','euthanasia'),line=2,cex=0.8)
+mtext(side=1,text='weeks',line=3,font=1)
+axis(side=2,at=(0:6)*5,las=2)
+axis(side=2,at=0:30,labels=NA,tck=-0.025)
+mtext(side=2,line=2.25,text='body weight (g)')
+leg = sqldf("select treatment, color from markers group by 1, 2 order by y asc;")
+par(xpd=T)
+#legend(x=0.5,y=32.5,legend=leg$treatment,lwd=2,col=leg$color,text.col=leg$color,text.font=1,bty='n',cex=0.85)
+par(xpd=F)
+mtext(LETTERS[panel], side=3, cex=2, adj = 0.0, line = 0.5)
+panel = panel + 1
+
+cconf = read.table('data/ionis/candidate_confirmation_500ug_1wk.tsv',sep='\t',header=T)
+
+markers = melt(cconf[,c('treatment','cortex_prnp_pct','cord_prnp_pct')])
+markers$value = markers$value / 100
+markers$y = rep(rep(7:1,each=4),2)
+markers$color = params$color[match(markers$treatment, params$display)]
+
+msmry = sqldf("
+              select   y, color, treatment, variable, avg(value) mean, stdev(value) sd, sum(case when value is not null then 1 else 0 end) n
+              from     markers m
+              group by 1, 2, 3, 4
+              order by 1, 2, 3, 4
+              ;")
+
+msmry$l95 = msmry$mean - 1.96 * msmry$sd / sqrt(msmry$n)
+msmry$u95 = msmry$mean + 1.96 * msmry$sd / sqrt(msmry$n)
+
+markers$pch = 20
+markers$pch[markers$value > 1.5] = 17
+markers$value[markers$value > 1.5] = 1.5
+
+msmry$display = msmry$treatment
+
+
+
+
+ylabs = sqldf("select y, treatment, color from msmry group by 1, 2, 3 order by 1 desc;")
+
+xlims = c(0,1.25)
+ylims = range(msmry$y) + c(-0.5, 0.5)
+
+par(mar=c(5,10,3,1))
+plot(NA, NA, xlim=xlims, ylim=ylims, xaxs='i', yaxs='i', ann=FALSE, axes=FALSE)
+axis(side=1,at=(0:4)/4,labels=percent((0:4)/4))
+axis(side=2, at=ylims, labels=NA, lwd.ticks=0)
+mtext(side=2, line=0.25, at=ylabs$y, text=ylabs$treatment, col=ylabs$color, las=2)
+mtext(side=1, line=2, text='residual', cex=0.9)
+abline(v=1,lwd=1,lty=3)
+points(x=markers$value[markers$variable=='cortex_prnp_pct'], y=markers$y[markers$variable=='cortex_prnp_pct'], col=markers$color[markers$variable=='cortex_prnp_pct'], lwd=0, pch=markers$pch[markers$variable=='cortex_prnp_pct'])
+arrows(y0=msmry$y[msmry$variable=='cortex_prnp_pct'], x0=msmry$l95[msmry$variable=='cortex_prnp_pct'], x1=msmry$u95[msmry$variable=='cortex_prnp_pct'], angle=90, length=0.03, code=3, lwd=1, col=msmry$color[msmry$variable=='cortex_prnp_pct'])
+segments(y0=msmry$y[msmry$variable=='cortex_prnp_pct']-.25, y1=msmry$y[msmry$variable=='cortex_prnp_pct']+.25, x0=msmry$mean[msmry$variable=='cortex_prnp_pct'], lwd=1, col=msmry$color[msmry$variable=='cortex_prnp_pct'])
+mtext(side=3, line=0.5, text='cortex', cex=0.9)
+text(x=rep(1.2,sum(msmry$variable=='cortex_prnp_pct')), y=msmry$y[msmry$variable=='cortex_prnp_pct'], labels=msmry$p_symb[msmry$variable=='cortex_prnp_pct'], srt=90)
+mtext(LETTERS[panel], side=3, cex=2, adj = -0.2, line = 0.5)
+panel = panel + 1
+
+par(mar=c(5,1,3,1))
+plot(NA, NA, xlim=xlims, ylim=ylims, xaxs='i', yaxs='i', ann=FALSE, axes=FALSE)
+axis(side=1,at=(0:4)/4,labels=percent((0:4)/4))
+axis(side=2, at=ylims, labels=NA, lwd.ticks=0)
+mtext(side=1, line=2, text='residual', cex=0.9)
+abline(v=1,lwd=1,lty=3)
+points(x=markers$value[markers$variable=='cord_prnp_pct'], y=markers$y[markers$variable=='cord_prnp_pct'], col=markers$color[markers$variable=='cord_prnp_pct'], lwd=0, pch=markers$pch[markers$variable=='cord_prnp_pct'])
+arrows(y0=msmry$y[msmry$variable=='cord_prnp_pct'], x0=msmry$l95[msmry$variable=='cord_prnp_pct'], x1=msmry$u95[msmry$variable=='cord_prnp_pct'], angle=90, length=0.03, code=3, lwd=1, col=msmry$color[msmry$variable=='cord_prnp_pct'])
+segments(y0=msmry$y[msmry$variable=='cord_prnp_pct']-.25, y1=msmry$y[msmry$variable=='cord_prnp_pct']+.25, x0=msmry$mean[msmry$variable=='cord_prnp_pct'], lwd=1, col=msmry$color[msmry$variable=='cord_prnp_pct'])
+mtext(side=3, line=0.5, text='thoracic\ncord', cex=0.9)
+mtext(LETTERS[panel], side=3, cex=2, adj = -0.2, line = 0.5)
+panel = panel + 1
+
 tte = read.table('data/ionis/time_to_effect.tsv',sep='\t',header=T)
 tte$color = params$color[match(tte$treatment,params$display)]
 tte$x = tte$days + seq(-.25, .25, by=1/6)
 
+par(mar=c(5,0.5,3,0.5))
+plot(NA, NA, xlim=c(0,8), ylim=c(0,1.2), axes=F, ann=F, xaxs='i', yaxs='i')
+axis(side=2, at=(0:4)/4, labels=percent((0:4)/4), las=2, line=-3)
+mtext(side=2, line=0, text='mRNA (% saline)')
+
+mtext(LETTERS[panel], side=3, cex=2, adj = -0.1, line = 0.5)
+panel = panel + 1
+
 for (region in unique(tte$region)) {
-  
+  par(mar=c(5,0.5,3,0.5))
   plot(NA, NA, xlim=c(0,8), ylim=c(0,1.2), axes=F, ann=F, xaxs='i', yaxs='i')
   axis(side=1, labels=NA, lwd=1, lwd.ticks=0)
-  axis(side=1, at=c(1,4,7), lwd.ticks=1)
-  mtext(side=1, line=2.5, text='days post-ICV')
-  axis(side=2, at=(0:4)/4, labels=percent((0:4)/4), las=2)
-  mtext(side=2, line=3.0, text='mRNA (% saline)')
-  abline(h=1, lwd=0.5, lty=3)
+  axis(side=1, at=c(1,7), lwd.ticks=1)
+  axis(side=1, at=c(4), lwd.ticks=1)
+  if (region=='thoracic cord') {
+    mtext(side=1, line=2.5, text='      days post-ICV')
+  }
+  abline(h=1, lwd=1, lty=3)
   
   # plot individual data points
   rows = tte$region == region
-  points(tte$x[rows], tte$mrna[rows], pch=20, col=tte$color[rows])
+  points(tte$x[rows], tte$mrna[rows], pch=20, col=tte$color[rows], cex=0.75)
   
   # plot means
   smry = sqldf(paste0("select treatment, days, avg(mrna) mean_mrna from tte where region = '",region,"' group by 1, 2 order by 1, 2;"))
   smry$color = params$color[match(smry$treatment,params$display)]
-  segments(x0=smry$days-0.33, x1=smry$days+0.33, y0=smry$mean_mrna, lwd=2, col=smry$color)
+  segments(x0=smry$days-0.9, x1=smry$days+0.9, y0=smry$mean_mrna, lwd=1, col=smry$color)
   
-  mtext(side=3, line=0.5, text=region)
-  
-  mtext(LETTERS[panel], side=3, cex=2, adj = -0.1, line = 0.5)
-  panel = panel + 1
+  mtext(side=3, line=0.5, text=gsub(' ','\n',gsub('thalamus','thal- amus',gsub('brainstem','brain stem',region))), cex=0.75)
 }
 
-leg = sqldf("select treatment, color, avg(mrna) mean_mrna from tte group by 1, 2 order by 3 desc;")
+plot(NA, NA, xlim=c(0,8), ylim=c(0,1.2), axes=F, ann=F, xaxs='i', yaxs='i')
 
-par(mar=rep(.5,4))
-plot(NA, NA, xlim=c(0,1), ylim=c(0,1), ann=F, axes=F, xaxs='i', yaxs='i')
-legend('center', leg$treatment, col=leg$color, text.col=leg$color, pch=20, horiz=T, bty='n', cex=1.5)
-
-dev.off() #### -- END FIGURE S1
+dev.off()
 
 
 
@@ -268,9 +571,25 @@ dev.off() #### -- END FIGURE S1
 
 
 
-#### FIGURE 1: replication of Raymond 2019 data with MOE ASOs
 
-imgsave(paste('display_items/figure-1.',imgmode,sep=''), width=6.5*resx, height=4.8*resx, res=resx)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#### FIGURE 2: replication of Raymond 2019 data with MOE ASOs
+
+imgsave(paste('display_items/figure-2.',imgmode,sep=''), width=6.5*resx, height=4.8*resx, res=resx)
 
 layout_matrix = matrix(c(1:6,7,7,7),nrow=3,byrow=T)
 layout(layout_matrix,heights=c(1,1,.25))
@@ -282,7 +601,9 @@ panel = 1
 m_full_xlims = c(-14, 350)
 m_symp_xlims = c(90, 350)
 
-sf = survfit(Surv(dpi, acm) ~ cohort, data=sqldf("select s.dpi, s.acm, b.cohort from surviv s, blind b where s.animal = b.animal and b.expt='M';"))
+msurvdat = sqldf("select s.dpi, s.acm, b.cohort from surviv s, blind b where s.animal = b.animal and b.expt='M';")
+sf = survfit(Surv(dpi, acm) ~ cohort, data=msurvdat)
+zph_p(coxph(Surv(dpi, acm) ~ cohort, data=msurvdat))
 sf$cohort = gsub('cohort=','',names(sf$strata))
 sf$treatment = params$display[match(sf$cohort, params$cohort)]
 sf$color = params$color[match(sf$cohort, params$cohort)]
@@ -290,6 +611,7 @@ sf$color = params$color[match(sf$cohort, params$cohort)]
 dosemarky = 1.08
 
 plot(sf, ann=FALSE, axes=FALSE, xlim=m_full_xlims, ylim=c(0,1.05), xaxs='i', yaxs='i', col=sf$col, lwd=c(3,3,3,3,3))
+add_surv_confint(sf)
 axis(side=1, at=-3:60*10, labels=NA, lwd=1, lwd.ticks=1, tck=-0.025)
 axis(side=1, at=c(0:7)*50, lwd=0, lwd.ticks=1)
 axis(side=2, at=c(0:4)/4, labels=percent(0:4/4), lwd=0, lwd.ticks=1, las=2)
@@ -361,13 +683,16 @@ panel = panel + 1
 p_full_xlims = c(0, 300)
 p_symp_xlims = c(120, 300)
 
-sf = survfit(Surv(dpi, acm) ~ cohort, data=sqldf("select s.dpi, s.acm, b.cohort from surviv s, blind b where s.animal = b.animal and b.expt='P';"))
+psurvdat = sqldf("select s.dpi, s.acm, b.cohort from surviv s, blind b where s.animal = b.animal and b.expt='P';")
+sf = survfit(Surv(dpi, acm) ~ cohort, data=psurvdat)
 sf$cohort = gsub('cohort=','',names(sf$strata))
 sf$treatment = params$display[match(sf$cohort, params$cohort)]
 sf$color = params$color[match(sf$cohort, params$cohort)]
+zph_p(coxph(Surv(dpi, acm) ~ cohort, data=psurvdat))
 
 dosemarky = 1.08
 plot(sf, ann=FALSE, axes=FALSE, xlim=m_full_xlims, ylim=c(0,1.05), xaxs='i', yaxs='i', col=sf$col, lwd=c(3,3,3,3,3))
+add_surv_confint(sf)
 axis(side=1, at=-3:60*10, labels=NA, lwd=1, lwd.ticks=1, tck=-0.025)
 axis(side=1, at=c(0:7)*50, lwd=0, lwd.ticks=1)
 axis(side=2, at=c(0:4)/4, labels=percent(0:4/4), lwd=0, lwd.ticks=1, las=2)
@@ -461,9 +786,83 @@ dev.off()
 
 
 
-#### FIGURE 2: dose-response
 
-imgsave(paste('display_items/figure-2.',imgmode,sep=''),width=6.5*resx,height=7*resx,res=resx)
+
+
+
+
+
+
+
+
+
+
+#### ADDITIONAL SUPP TABLES FOR FIGS 1-4
+supp_survival_1_2 = sqldf("
+select   b.expt, b.cohort, avg(s.dpi) mean_dpi, stdev(s.dpi) sd_dpi, count(*) n
+from     surviv s, blind b
+where    s.animal = b.animal
+and      b.expt in ('M','P','D')
+and      s.endpoint
+group by 1, 2
+order by 1, 2
+;")
+supp_survival_1_2$disp = params$display[match(supp_survival_1_2$cohort, params$cohort)]
+
+n_surviv = read.table('data/mri/N_survival.tsv',sep='\t',header=T)
+supp_survival_3 = sqldf("
+select   'N' expt, cohort, cohort disp, avg(dpi) mean_dpi, stdev(dpi) sd_dpi, count(*) n
+from     n_surviv
+where    status = 1
+group by 2
+order by 2
+;")
+c_surviv = read.table('data/mri/C_survival.tsv',sep='\t',header=T)
+b_surviv = read.table('data/mri/B_survival.tsv',sep='\t',header=T,quote='',comment.char='')
+supp_survival_4ab = sqldf("
+select   'C' expt, treatment cohort, treatment disp, avg(dpi) mean_dpi, stdev(dpi) sd_dpi, count(*) n
+from     c_surviv
+where    endpoint
+group by 2
+order by 2
+;")
+supp_survival_4cd = sqldf("
+select   'B' expt, category cohort, category disp, avg(dpi) mean_dpi, stdev(dpi) sd_dpi, count(*) n
+from     b_surviv
+where    prion_endpoint
+group by 2
+order by 2
+;")
+
+
+supp_survival_step1 = rbind(supp_survival_1_2, supp_survival_3, supp_survival_4ab, supp_survival_4cd)
+supp_survival_step1$mean_sd = paste0(formatC(supp_survival_step1$mean_dpi,format='f',digits=1),' ± ',formatC(supp_survival_step1$sd_dpi,format='f',digits=1))
+supp_survival_step1$mean_sd[supp_survival_step1$n==1] = paste0(formatC(supp_survival_step1$mean_dpi[supp_survival_step1$n==1],format='f',digits=1))
+
+supp_survival_meta = data.frame(expt=c('M','P','D','N','C','B'),roworder=1:6,control_cohort=c('M-PBS','d120-MOE-PBS','DR-000','uninoculated','saline','saline'))
+
+supp_survival_meta$control_mean = supp_survival_step1$mean_dpi[match(paste0(supp_survival_meta$expt,supp_survival_meta$control_cohort), paste0(supp_survival_step1$expt,supp_survival_step1$cohort))]
+
+
+
+supp_survival = sqldf("
+select   m.roworder, m.expt, case when s.cohort = m.control_cohort then 1 else 0 end is_control,
+         s.disp, s.mean_sd, s.n, s.mean_dpi / m.control_mean - 1 delta
+from     supp_survival_step1 s, supp_survival_meta m
+where    s.expt = m.expt
+order by 1 asc, 3 desc, 7 asc
+;")
+supp_survival$delta = signed_percent(supp_survival$delta)
+
+table_s3 = supp_survival
+
+write.table(table_s3, 'display_items/table-s2.tsv', sep='\t', col.names=T, row.names=F, quote=F, na='-')
+
+
+
+#### FIGURE 3: dose-response
+
+imgsave(paste('display_items/figure-3.',imgmode,sep=''),width=6.5*resx,height=7*resx,res=resx)
 
 layout_matrix = matrix(c(1,2,3,4,4,4,5,6,7),nrow=3,byrow=T)
 layout(layout_matrix)
@@ -526,10 +925,12 @@ inctime_table$qpcr_mean = asmry$mean_mrna[match(inctime_table$dose, asmry$dose)]
 inctime_table$qpcr_l95 = asmry$l95[match(inctime_table$dose, asmry$dose)]
 inctime_table$qpcr_u95 = asmry$u95[match(inctime_table$dose, asmry$dose)]
 
-sf = survfit(Surv(dpi, acm) ~ dose, data=sqldf("select s.dpi, s.acm, b.cohort, b.dose from surviv s, blind b where s.animal = b.animal and b.expt='D';"))
+dsurvdat=sqldf("select s.dpi, s.acm, b.cohort, b.dose from surviv s, blind b where s.animal = b.animal and b.expt='D';")
+sf = survfit(Surv(dpi, acm) ~ dose, data=dsurvdat)
 sf$dose = gsub('dose=','',names(sf$strata))
 sf$cohort = paste('DR-',formatC(as.integer(sf$dose),width=3,flag='0'),sep='')
 sf$color = params$color[match(sf$cohort, params$cohort)]
+zph_p(coxph(Surv(dpi, acm) ~ dose, data=dsurvdat))
 
 # check log-rank test significance of 0 vs. 30 dose
 just0_30 = sqldf("select s.dpi, s.acm, b.cohort, b.dose from surviv s, blind b where s.animal = b.animal and b.expt='D' and b.dose in (0,30);")
@@ -586,6 +987,7 @@ mtext('B', side=3, cex=2, adj = -0.3, line = 1.5)
 dosemarky = 1.08
 par(mar=c(4,6,4,4))
 plot(sf, ann=FALSE, axes=FALSE, xlim=c(-14,300), ylim=c(0,1.05), xaxs='i', yaxs='i', col=sf$col, lwd=c(3,3,3,3,3))
+add_surv_confint(sf)
 axis(side=1, at=c(0:7)*50, lwd=0, lwd.ticks=1)
 axis(side=2, at=c(0:4)/4, labels=percent(0:4/4), lwd=0, lwd.ticks=1, las=2)
 abline(h=0)
@@ -682,61 +1084,61 @@ dev.off()
 
 #### TABLE 1: effects of ASO treatment and genetic knockout across 5 strains
 
-table1_left = sqldf("
-select   p.x,
-         b.strain, 
-         avg(case when b.treatment = 'saline' then s.dpi else null end) saline_mean_dpi,
-         stdev(case when b.treatment = 'saline' then s.dpi else null end) saline_sd_dpi,
-         sum(case when b.treatment = 'saline' then 1 else 0 end) saline_n,
-         avg(case when b.treatment = 'active ASO 1' then s.dpi else null end) active_mean_dpi,
-         stdev(case when b.treatment = 'active ASO 1' then s.dpi else null end) active_sd_dpi,
-         sum(case when b.treatment = 'active ASO 1' then 1 else 0 end) active_n,
-         avg(case when b.treatment = 'active ASO 1' then s.dpi else null end) /  avg(case when b.treatment = 'saline' then s.dpi else null end) delta
-from     surviv s, blind b, params p
-where    s.animal = b.animal
-and      b.cohort = p.cohort
-and      b.expt in ('S','Q','R') and (not (b.expt = 'S' and b.strain='22L'))
-and      s.endpoint
-group by 1, 2
-order by 1
-;")
-table1_left$saline_itime = paste(formatC(table1_left$saline_mean_dpi,format='f',digits=0),
-                                 '±',formatC(table1_left$saline_sd_dpi,format='f',digits=0),sep='')
-table1_left$active_itime = paste(formatC(table1_left$active_mean_dpi,format='f',digits=0),
-                                 '±',formatC(table1_left$active_sd_dpi,format='f',digits=0),sep='')
-table1_left$a_delta_pct = paste('+',percent(table1_left$delta - 1),sep='')
+table2_left = sqldf("
+                    select   p.x,
+                    b.strain, 
+                    avg(case when b.treatment = 'saline' then s.dpi else null end) saline_mean_dpi,
+                    stdev(case when b.treatment = 'saline' then s.dpi else null end) saline_sd_dpi,
+                    sum(case when b.treatment = 'saline' then 1 else 0 end) saline_n,
+                    avg(case when b.treatment = 'active ASO 1' then s.dpi else null end) active_mean_dpi,
+                    stdev(case when b.treatment = 'active ASO 1' then s.dpi else null end) active_sd_dpi,
+                    sum(case when b.treatment = 'active ASO 1' then 1 else 0 end) active_n,
+                    avg(case when b.treatment = 'active ASO 1' then s.dpi else null end) /  avg(case when b.treatment = 'saline' then s.dpi else null end) delta
+                    from     surviv s, blind b, params p
+                    where    s.animal = b.animal
+                    and      b.cohort = p.cohort
+                    and      b.expt in ('S','Q','R') and (not (b.expt = 'S' and b.strain='22L'))
+                    and      s.endpoint
+                    group by 1, 2
+                    order by 1
+                    ;")
+table2_left$saline_itime = paste(formatC(table2_left$saline_mean_dpi,format='f',digits=0),
+                                 '±',formatC(table2_left$saline_sd_dpi,format='f',digits=0),sep='')
+table2_left$active_itime = paste(formatC(table2_left$active_mean_dpi,format='f',digits=0),
+                                 '±',formatC(table2_left$active_sd_dpi,format='f',digits=0),sep='')
+table2_left$a_delta_pct = paste('+',percent(table2_left$delta - 1),sep='')
 
-table1_right = sqldf("
-select   p.x,
-         b.strain, 
-         avg(  case when b.cohort like '%WT%'  then s.dpi else null end) wt_mean_dpi,
-         stdev(case when b.cohort like '%WT%'  then s.dpi else null end) wt_sd_dpi,
-         sum(  case when b.cohort like '%WT%'  then 1 else 0 end) wt_n,
-         avg(  case when b.cohort like '%ZH3%' then s.dpi else null end) zh3_mean_dpi,
-         stdev(case when b.cohort like '%ZH3%' then s.dpi else null end) zh3_sd_dpi,
-         sum(  case when b.cohort like '%ZH3%' then 1 else 0 end) zh3_n,
-         avg(  case when b.cohort like '%ZH3%' then s.dpi else null end) /  avg(case when b.cohort like '%WT%'  then s.dpi else null end) delta
-from     surviv s, blind b, params p
-where    s.animal = b.animal
-and      b.cohort = p.cohort
-and      b.expt = 'G'
-and      s.endpoint
-group by 1, 2
-order by 1
-;")
+table2_right = sqldf("
+                     select   p.x,
+                     b.strain, 
+                     avg(  case when b.cohort like '%WT%'  then s.dpi else null end) wt_mean_dpi,
+                     stdev(case when b.cohort like '%WT%'  then s.dpi else null end) wt_sd_dpi,
+                     sum(  case when b.cohort like '%WT%'  then 1 else 0 end) wt_n,
+                     avg(  case when b.cohort like '%ZH3%' then s.dpi else null end) zh3_mean_dpi,
+                     stdev(case when b.cohort like '%ZH3%' then s.dpi else null end) zh3_sd_dpi,
+                     sum(  case when b.cohort like '%ZH3%' then 1 else 0 end) zh3_n,
+                     avg(  case when b.cohort like '%ZH3%' then s.dpi else null end) /  avg(case when b.cohort like '%WT%'  then s.dpi else null end) delta
+                     from     surviv s, blind b, params p
+                     where    s.animal = b.animal
+                     and      b.cohort = p.cohort
+                     and      b.expt = 'G'
+                     and      s.endpoint
+                     group by 1, 2
+                     order by 1
+                     ;")
 
 
-table1_right$wt_itime = paste(formatC(table1_right$wt_mean_dpi,format='f',digits=0),
-                                 '±',formatC(table1_right$wt_sd_dpi,format='f',digits=0),sep='')
-table1_right$zh3_itime = paste(formatC(table1_right$zh3_mean_dpi,format='f',digits=0),
-                                 '±',formatC(table1_right$zh3_sd_dpi,format='f',digits=0),sep='')
-table1_right$g_delta_pct = paste('+',percent(table1_right$delta - 1),sep='')
-table1_right = rbind(table1_right, rep(NA,ncol(table1_right))) # add a blank row for RML[ASO]
+table2_right$wt_itime = paste(formatC(table2_right$wt_mean_dpi,format='f',digits=0),
+                              '±',formatC(table2_right$wt_sd_dpi,format='f',digits=0),sep='')
+table2_right$zh3_itime = paste(formatC(table2_right$zh3_mean_dpi,format='f',digits=0),
+                               '±',formatC(table2_right$zh3_sd_dpi,format='f',digits=0),sep='')
+table2_right$g_delta_pct = paste('+',percent(table2_right$delta - 1),sep='')
+table2_right = rbind(table2_right, rep(NA,ncol(table2_right))) # add a blank row for RML[ASO]
 
-table1 = cbind(table1_left[,c('strain','saline_itime','saline_n','active_itime','active_n','a_delta_pct')],
-               table1_right[,c('wt_itime','wt_n','zh3_itime','zh3_n','g_delta_pct')])
+table2 = cbind(table2_left[,c('strain','saline_itime','saline_n','active_itime','active_n','a_delta_pct')],
+               table2_right[,c('wt_itime','wt_n','zh3_itime','zh3_n','g_delta_pct')])
 
-write.table(table1, 'display_items/table-1.tsv', sep='\t', col.names=T, row.names=F, quote=F)
+write.table(table2, 'display_items/table-2.tsv', sep='\t', col.names=T, row.names=F, quote=F)
 
 
 #### TABLE 2
@@ -788,12 +1190,12 @@ z_params2$proportion_outlive = paste(z_params2$n_outlive,z_params2$n_total,sep='
 z_params2$dpi_outlive = paste(round(z_params2$mean_dpi_outlive,digits=0),'±',round(z_params2$sd_dpi_outlive,digits=0),sep='')
 z_params2$delta_outlive = paste0('+',percent(z_params2$mean_delta_outlive))
 
-table2 = z_params[,c('strain','dpi_treatment','timepoint','saline_itime','saline_n','active_itime','active_n','delta')]
-table2$proportion_outlive = z_params2$proportion_outlive[match(table2$strain, z_params2$strain)]
-table2$dpi_outlive = z_params2$dpi_outlive[match(table2$strain, z_params2$strain)]
-table2$delta_outlive = z_params2$delta_outlive[match(table2$strain, z_params2$strain)]
+table3 = z_params[,c('strain','dpi_treatment','timepoint','saline_itime','saline_n','active_itime','active_n','delta')]
+table3$proportion_outlive = z_params2$proportion_outlive[match(table3$strain, z_params2$strain)]
+table3$dpi_outlive = z_params2$dpi_outlive[match(table3$strain, z_params2$strain)]
+table3$delta_outlive = z_params2$delta_outlive[match(table3$strain, z_params2$strain)]
 
-write.table(table2, 'display_items/table-2.tsv', sep='\t', col.names=T, row.names=F, quote=F)
+write.table(table3, 'display_items/table-3.tsv', sep='\t', col.names=T, row.names=F, quote=F)
 
 # do the proportions differ?
 fisher.test(z_params2[,c('n_outlive','n_total')], alternative='two.sided')
@@ -807,9 +1209,9 @@ fisher.test(z_params2[,c('n_outlive','n_total')], alternative='two.sided')
 
 
 
-### FIGURE S2: survival curves from table 1 ASO treatments
+### FIGURE S1: survival curves from table 1 ASO treatments
 
-imgsave(paste('display_items/figure-s2.',imgmode,sep=''),width=6.5*resx,height=6.5*resx,res=resx)
+imgsave(paste('display_items/figure-s1.',imgmode,sep=''),width=6.5*resx,height=6.5*resx,res=resx)
 
 layout_matrix = matrix(c(1,2,3,4,5,6,7,8), nrow=4, byrow=T)
 layout(layout_matrix)
@@ -834,10 +1236,12 @@ dosemarky = 1.08
 panel = 1
 for (title in c('RML','22L (original)','22L (repeat)','Fukuoka-1','ME7','OSU','RML[ASO]')) {
   subs = ss[ss$title==title,]
+  zph_p(coxph(Surv(dpi, acm) ~ treatment, data=subs))
   sf = survfit(Surv(dpi, acm) ~ treatment, data=subs)
   sf$cohort = gsub('treatment=','',names(sf$strata))
   sf$color = params$color[match(sf$cohort, params$display)]
   plot(sf, ann=FALSE, axes=FALSE, xlim=s_full_xlims, ylim=c(0,1.05), xaxs='i', yaxs='i', col=sf$color, lwd=3)
+  add_surv_confint(sf)
   axis(side=1, at=-3:60*10, labels=NA, lwd=1, lwd.ticks=1, tck=-0.025)
   axis(side=1, at=c(0:7)*50, lwd=0, lwd.ticks=1)
   axis(side=2, at=c(0:4)/4, labels=percent(0:4/4), lwd=0, lwd.ticks=1, las=2)
@@ -861,9 +1265,9 @@ dev.off()
 
 
 
-#### FIGURE S3: do weights, symptoms, and nests support the differences between strains in G cohort being real?
+#### FIGURE S2: do weights, symptoms, and nests support the differences between strains in G cohort being real?
 
-imgsave(paste('display_items/figure-s3.',imgmode,sep=''),width=6.5*resx,height=4.5*resx,res=resx)
+imgsave(paste('display_items/figure-s2.',imgmode,sep=''),width=6.5*resx,height=4.5*resx,res=resx)
 
 layout_matrix = matrix(c(1,1,2,2,3,4,4,5,5,6), nrow=2, byrow=T)
 layout(layout_matrix)
@@ -884,9 +1288,11 @@ gsurv = survfit(Surv(dpi, acm) ~ cohort, data=gs)
 gsurv$cohort = gsub('cohort=','',names(gsurv$strata))
 gsurv$color = params$color2[match(gsurv$cohort, params$cohort)]
 gsurv$lty = params$lty2[match(gsurv$cohort, params$cohort)]
+zph_p(coxph(Surv(dpi, acm) ~ cohort, data=gs))
 
 par(mar=c(4,5,3,1))
 plot(gsurv, ann=FALSE, axes=FALSE, xlim=c(0,450), ylim=c(0,1.05), xaxs='i', yaxs='i', lwd=strain_lwd, col=gsurv$color, lty=gsurv$lty)
+# add_surv_confint(gsurv) # suppressed because it would make plot illegible
 axis(side=1, at=-3:60*10, labels=NA, lwd=1, lwd.ticks=1, tck=-0.025)
 axis(side=1, at=(0:9)*50, labels=NA, lwd=1, lwd.ticks=1, tck=-0.05)
 axis(side=1, at=c(0:5)*100, lwd=0, lwd.ticks=0, line=-0.5)
@@ -993,9 +1399,9 @@ dev.off()
 
 
 
-#### FIGURE S4: Z cohort
+#### FIGURE S3: Z cohort
 
-imgsave(paste('display_items/figure-s4.',imgmode,sep=''),width=6.5*resx,height=4.5*resx,res=resx)
+imgsave(paste('display_items/figure-s3.',imgmode,sep=''),width=6.5*resx,height=4.5*resx,res=resx)
 
 layout_matrix = matrix(c(1,1,2,2,3,4,4,5,5,6), nrow=2, byrow=T)
 layout(layout_matrix)
@@ -1017,8 +1423,11 @@ zsurv$cohort = gsub('cohort=','',names(zsurv$strata))
 zsurv$color = params$color2[match(zsurv$cohort, params$cohort)]
 zsurv$lty = params$lty2[match(zsurv$cohort, params$cohort)]
 
+zph_p(coxph(Surv(dpi, acm) ~ cohort, data=zs))
+
 par(mar=c(4,5,3,1))
 plot(zsurv, ann=FALSE, axes=FALSE, xlim=c(0,300), ylim=c(0,1.05), xaxs='i', yaxs='i', lwd=strain_lwd, col=zsurv$color, lty=zsurv$lty)
+# add_surv_confint(zsurv) # suppressed because it would make plot illegible - too many curves/colors
 axis(side=1, at=-3:60*10, labels=NA, lwd=1, lwd.ticks=1, tck=-0.025)
 axis(side=1, at=seq(0,450,by=50), labels=NA, lwd=0, lwd.ticks=1, tck=-0.05)
 axis(side=1, at=seq(0,500,by=100), line=-0.5, lwd=0, lwd.ticks=0)
@@ -1134,9 +1543,9 @@ dev.off()
 
 
 
-#### FIGURE 4: MRI bioluminescence study + control ASO NfL study
+#### FIGURE 5: MRI bioluminescence study + control ASO NfL study
 
-imgsave(paste('display_items/figure-4.',imgmode,sep=''), width=6.5*resx, height=3.25*resx, res=resx)
+imgsave(paste('display_items/figure-5.',imgmode,sep=''), width=6.5*resx, height=3.25*resx, res=resx)
 
 #layout_matrix = matrix(c(1,4,2,5,3,6),nrow=3,byrow=T)
 layout_matrix = matrix(c(1,3,2,4),nrow=2,byrow=T)
@@ -1264,9 +1673,12 @@ sf = survfit(Surv(dpi) ~ treatment, data=master)
 sf$treatment = gsub('treatment=','',names(sf$strata))
 sf$color = cohorts$color[match(sf$treatment, cohorts$cohort)]
 
+zph_p(coxph(Surv(dpi) ~ treatment, data=master))
+
 marky = 1.05
 par(mar=c(2,4,3,1))
 plot(sf, ann=FALSE, axes=FALSE, xlim=xlims, ylim=c(0,1.05), xaxs='i', yaxs='i', col=sf$color, lwd=c(3,3,3,3,3))
+add_surv_confint(sf)
 axis(side=1, at=-3:60*10, labels=NA, lwd=1, lwd.ticks=1, tck=-0.025)
 axis(side=1, at=seq(min(xlims),max(xlims),50), labels=NA, lwd=0, lwd.ticks=1, tck=-0.05)
 axis(side=1, at=seq(min(xlims),max(xlims),50), lwd=0, line=-.75)
@@ -1437,9 +1849,12 @@ sf = survfit(Surv(dpi, acm) ~ treatment, data=subset(master, treatment != 'uninf
 sf$treatment = gsub('treatment=','',names(sf$strata))
 sf$color = cohorts$color[match(sf$treatment, cohorts$cohort)]
 
+zph_p(coxph(Surv(dpi, acm) ~ treatment, data=subset(master, treatment != 'uninfected')))
+
 marky = 1.05
 par(mar=c(2,4,3,1))
 plot(sf, ann=FALSE, axes=FALSE, xlim=c(0,260), ylim=c(0,1.05), xaxs='i', yaxs='i', col=sf$color, lwd=c(3,3,3,3,3))
+add_surv_confint(sf)
 points(x=c(0,aso_dpi), y=c(1,1), type='l', lwd=3, col=cohorts$color[cohorts$cohort=='pre-treatment'])
 axis(side=1, at=-3:60*10, labels=NA, lwd=1, lwd.ticks=1, tck=-0.025)
 axis(side=1, at=seq(min(xlims),max(xlims),50), labels=NA, lwd=0, lwd.ticks=1, tck=-0.05)
@@ -1508,47 +1923,15 @@ t_params_ep = sqldf("
                  order by 1
                  ;")
 
-# inspect the data
-# View(sqldf("select * from blind b, surviv s where b.animal = s.animal and b.timepoint in (105,120) and b.expt ='T' order by b.animal;"))
-# View(sqldf("select * from blind b, surviv s where b.animal = s.animal and b.timepoint in (-7,1,28,56,78) and b.expt ='T' order by b.animal;"))
-
-t_params_acm = sqldf("
-                    select   p.x, b.timepoint,
-                    avg(surg.dpi) actual_dpi_treatment,
-                    avg(  case when b.treatment='saline'       and s.acm then s.dpi else null end) saline_mean_dpi,
-                    stdev(case when b.treatment='saline'       and s.acm then s.dpi else null end) saline_sd_dpi,
-                    sum(  case when b.treatment='saline'       and s.acm then 1 else 0 end) saline_n,
-                    avg(  case when b.treatment='active ASO 6' and s.acm then s.dpi else null end) active_mean_dpi,
-                    stdev(case when b.treatment='active ASO 6' and s.acm then s.dpi else null end) active_sd_dpi,
-                    sum(  case when b.treatment='active ASO 6' and s.acm then 1 else 0 end) active_n
-                    from     surviv s, blind b, surgery surg, params p
-                    where    s.animal = b.animal
-                    and      s.animal = surg.animal
-                    and      surg.event = 'icv1'
-                    and      b.expt = 'T'
-                    and      b.cohort = p.cohort
-                    and      b.timepoint is not null
-                    group by 1, 2
-                    order by 1
-                    ;")
-
-t_params_ep$delta = paste('+',percent(t_params_ep$active_mean_dpi / t_params_ep$saline_mean_dpi - 1),sep='')
+t_params_ep$delta = signed_percent(t_params_ep$active_mean_dpi / t_params_ep$saline_mean_dpi - 1)
 t_params_ep$saline_itime = paste(formatC(t_params_ep$saline_mean_dpi,format='f',digits=0),
                                  '±',formatC(t_params_ep$saline_sd_dpi,format='f',digits=0),sep='')
 t_params_ep$active_itime = paste(formatC(t_params_ep$active_mean_dpi,format='f',digits=0),
                                  '±',formatC(t_params_ep$active_sd_dpi,format='f',digits=0),sep='')
 
-t_params_acm$delta = paste('+',percent(t_params_acm$active_mean_dpi / t_params_acm$saline_mean_dpi - 1),sep='')
-t_params_acm$saline_itime = paste(formatC(t_params_acm$saline_mean_dpi,format='f',digits=0),
-                                 '±',formatC(t_params_acm$saline_sd_dpi,format='f',digits=0),sep='')
-t_params_acm$active_itime = paste(formatC(t_params_acm$active_mean_dpi,format='f',digits=0),
-                                 '±',formatC(t_params_acm$active_sd_dpi,format='f',digits=0),sep='')
-
 table_t_ep = t_params_ep[,c('timepoint','saline_itime','saline_n','active_itime','active_n','delta')]
-table_t_acm = t_params_acm[,c('timepoint','saline_itime','saline_n','active_itime','active_n','delta')]
 
-write.table(table_s1_acm, 'display_items/table-s3.tsv', sep='\t', col.names=T, row.names=F, quote=F)
-
+write.table(table_t_ep, 'display_items/table-s4.tsv', sep='\t', col.names=T, row.names=F, quote=F)
 
 
 
@@ -1566,8 +1949,9 @@ write.table(table_s1_acm, 'display_items/table-s3.tsv', sep='\t', col.names=T, r
 
 
 
-#### FIGURE 5: timepoint dependence
-imgsave(paste('display_items/figure-5.',imgmode,sep=''),width=6.5*resx,height=7.5*resx,res=resx)
+
+#### FIGURE 6: timepoint dependence
+imgsave(paste('display_items/figure-6.',imgmode,sep=''),width=6.5*resx,height=7.5*resx,res=resx)
 
 #layout_matrix = matrix(c(1,1,1,2,2,2,3,4,5,6,7,8), nrow=4, byrow=T) # from when this and ST were all one figure
 #layout(layout_matrix)
@@ -1609,11 +1993,13 @@ for (tpt in unique(t_surv$timepoint)) {
   tsurv$cohort = gsub('cohort=','',names(tsurv$strata))
   tsurv$color = params$color[match(tsurv$cohort, params$cohort)]
   
+  zph_p(coxph(Surv(dpi, acm) ~ cohort, data=subset(t_surv, timepoint==tpt)))
+  
   anmls = blind$animal[blind$cohort %in% tsurv$cohort]
   surg_dpi = sort(unique(surgery$dpi[grepl('icv',surgery$event) & surgery$animal %in% anmls]))
   
   plot(tsurv, ann=FALSE, axes=FALSE, xlim=xlims, ylim=c(0,1.05), xaxs='i', yaxs='i', lwd=default_lwd, col=tsurv$color, lty=1)
-
+  add_surv_confint(tsurv)
   axis(side=1, at=-3:60*10, labels=NA, lwd=1, lwd.ticks=1, tck=-0.025)
   axis(side=1, at=0:10*50, labels=NA, lwd=0, lwd.ticks=1, tck=-0.05)
   if (panel == 7) {
@@ -1749,8 +2135,10 @@ summary(anova)
 # ok, prepare simplified survival curve with just 3 curves
 sf = survfit(Surv(dpi, acm) ~ meta_cohort, data=t_grouped_surv)
 sf$meta_cohort = gsub('meta_cohort=','',names(sf$strata))
-sf$col = t_pparams$color[match(sf$meta_cohort, t_pparams$meta_cohort)]
+sf$color = t_pparams$color[match(sf$meta_cohort, t_pparams$meta_cohort)]
 sf$lty = t_pparams$lty[match(sf$meta_cohort, t_pparams$meta_cohort)]
+
+zph_p(coxph(Surv(dpi, acm) ~ meta_cohort, data=t_grouped_surv))
 
 # add in the G RML cohort as a control for comparison
 g_rml_surv = sqldf("
@@ -1767,14 +2155,18 @@ gsf$cohort = gsub('cohort=','',names(gsf$strata))
 #gsf$lty[gsf$lty==3] = 2
 gsf$lty = c(1,2)
 gc_col = '#E6550D'
-gsf$col = gc_col
+gsf$color = rep(gc_col,length(gsf$strata))
+
+zph_p(coxph(Surv(dpi, acm) ~ cohort, data=g_rml_surv))
 
 par(mar=c(3,6,3,2))
 plot(NA, NA, ann=FALSE, axes=FALSE, xlim=xlims, ylim=c(0,1.05), xaxs='i', yaxs='i')
 par(new=T)
-plot(gsf, ann=FALSE, axes=FALSE, xlim=xlims, ylim=c(0,1.05), xaxs='i', yaxs='i', col=gsf$col, lty=gsf$lty, lwd=default_lwd)
+plot(gsf, ann=FALSE, axes=FALSE, xlim=xlims, ylim=c(0,1.05), xaxs='i', yaxs='i', col=gsf$color, lty=gsf$lty, lwd=default_lwd)
+add_surv_confint(gsf)
 par(new=T)
-plot(sf, ann=FALSE, axes=FALSE, xlim=xlims, ylim=c(0,1.05), xaxs='i', yaxs='i', col=sf$col, lty=sf$lty, lwd=default_lwd)
+plot(sf, ann=FALSE, axes=FALSE, xlim=xlims, ylim=c(0,1.05), xaxs='i', yaxs='i', col=sf$color, lty=sf$lty, lwd=default_lwd)
+add_surv_confint(sf)
 axis(side=1, at=-3:60*10, labels=NA, lwd=1, lwd.ticks=1, tck=-0.025)
 axis(side=1, at=0:10*50, labels=NA, lwd.ticks=1, tck=-0.05)
 axis(side=1, at=0:5*100, lwd=0, lwd.ticks=0, line=-0.5)
@@ -1790,8 +2182,8 @@ par(xpd=T)
 points(x=0,y=1.0,pch=25,col=infect_col,bg=infect_col)
 par(xpd=F)
 par(xpd=T)
-legend(x=435,y=1.15,legend=rev(t_pparams$meta_cohort), col=rev(t_pparams$color), lty=rev(t_pparams$lty), lwd=default_lwd/2, text.col=rev(t_pparams$color), text.font=2, bty='n', cex=1, title.col='black', title='treatment')
-legend(x=435,y=.78,legend=c('wild-type','Prnp+/-'), col=gsf$col, lty=gsf$lty, lwd=default_lwd/2, text.col=gsf$col, text.font=2, bty='n', cex=1, title.col='black', title='genetic control')
+legend(x=435,y=1.15,legend=rev(t_pparams$meta_cohort), col=rev(t_pparams$color), lty=rev(t_pparams$lty), lwd=default_lwd/2, text.col=rev(t_pparams$color), text.font=2, bty='n', title.col='black', title='treatment')
+legend(x=435,y=.78,legend=c('wild-type','Prnp+/-'), col=gsf$col, lty=gsf$lty, lwd=default_lwd/2, text.col=gsf$col, text.font=2, bty='n', title.col='black', title='genetic control')
 par(xpd=F)
 mtext(LETTERS[panel], side=3, cex=2, adj=-0.05, line = 0.5)
 panel = panel + 1
@@ -1807,8 +2199,8 @@ dev.off()
 
 
 
-#### FIGURE S7 - THE SUPP HALF OF FIGURE 5
-imgsave(paste('display_items/figure-s7.',imgmode,sep=''),width=6.5*resx,height=4.5*resx,res=resx)
+#### FIGURE S6 - THE SUPP HALF OF FIGURE 6
+imgsave(paste('display_items/figure-s6.',imgmode,sep=''),width=6.5*resx,height=4.5*resx,res=resx)
 
 layout_matrix = matrix(c(1:8),byrow=T,nrow=2)
 layout(layout_matrix, widths=c(.75,1,1,1))
@@ -2112,15 +2504,15 @@ dev.off()
 
 
 # V cohort - table S2 and figure 6C+
-v_params_acm = sqldf("
+v_params_ep = sqldf("
                      select   p.x, b.timepoint,
                      avg(surg.dpi) actual_dpi_treatment,
-                     avg(  case when b.treatment='saline'       and s.acm then s.dpi else null end) saline_mean_dpi,
-                     stdev(case when b.treatment='saline'       and s.acm then s.dpi else null end) saline_sd_dpi,
-                     sum(  case when b.treatment='saline'       and s.acm then 1 else 0 end) saline_n,
-                     avg(  case when b.treatment='active ASO 6' and s.acm then s.dpi else null end) active_mean_dpi,
-                     stdev(case when b.treatment='active ASO 6' and s.acm then s.dpi else null end) active_sd_dpi,
-                     sum(  case when b.treatment='active ASO 6' and s.acm then 1 else 0 end) active_n
+                     avg(  case when b.treatment='saline'       and s.endpoint then s.dpi else null end) saline_mean_dpi,
+                     stdev(case when b.treatment='saline'       and s.endpoint then s.dpi else null end) saline_sd_dpi,
+                     sum(  case when b.treatment='saline'       and s.endpoint then 1 else 0 end) saline_n,
+                     avg(  case when b.treatment='active ASO 6' and s.endpoint then s.dpi else null end) active_mean_dpi,
+                     stdev(case when b.treatment='active ASO 6' and s.endpoint then s.dpi else null end) active_sd_dpi,
+                     sum(  case when b.treatment='active ASO 6' and s.endpoint then 1 else 0 end) active_n
                      from     surviv s, blind b, surgery surg, params p
                      where    s.animal = b.animal
                      and      s.animal = surg.animal
@@ -2132,14 +2524,14 @@ v_params_acm = sqldf("
                      order by 1
                      ;")
 
-v_params_acm$delta = paste('+',percent(v_params_acm$active_mean_dpi / v_params_acm$saline_mean_dpi - 1),sep='')
-v_params_acm$saline_itime = paste(formatC(v_params_acm$saline_mean_dpi,format='f',digits=0),
-                                  '±',formatC(v_params_acm$saline_sd_dpi,format='f',digits=0),sep='')
-v_params_acm$active_itime = paste(formatC(v_params_acm$active_mean_dpi,format='f',digits=0),
-                                  '±',formatC(v_params_acm$active_sd_dpi,format='f',digits=0),sep='')
+v_params_ep$delta = signed_percent(v_params_ep$active_mean_dpi / v_params_ep$saline_mean_dpi - 1)
+v_params_ep$saline_itime = paste(formatC(v_params_ep$saline_mean_dpi,format='f',digits=0),
+                                  '±',formatC(v_params_ep$saline_sd_dpi,format='f',digits=0),sep='')
+v_params_ep$active_itime = paste(formatC(v_params_ep$active_mean_dpi,format='f',digits=0),
+                                  '±',formatC(v_params_ep$active_sd_dpi,format='f',digits=0),sep='')
 
-table_s4 = v_params_acm[,c('timepoint','saline_itime','saline_n','active_itime','active_n','delta')]
-write.table(table_s4, 'display_items/table-s4.tsv', sep='\t', col.names=T, row.names=F, quote=F)
+table_s4 = v_params_ep[,c('timepoint','saline_itime','saline_n','active_itime','active_n','delta')]
+write.table(table_s4, 'display_items/table-s5.tsv', sep='\t', col.names=T, row.names=F, quote=F)
 
 ## examine data
 # View(sqldf("select * from blind b, surviv s where b.animal = s.animal and b.expt ='V' order by b.animal;"))
@@ -2162,8 +2554,8 @@ extended_proportion = mean(v_surv$dpi[v_surv$timepoint %in% c(132, 143) & v_surv
 sum(v_surv$dpi[v_surv$timepoint %in% c(132, 143) & v_surv$treatment=='active ASO 6' & v_surv$acm] > 1.1*saline_mean)
 sum(v_surv$dpi[v_surv$timepoint %in% c(132, 143) & v_surv$treatment=='active ASO 6' & v_surv$acm] <= 1.1*saline_mean)
 
-#### FIGURE 6: V cohort - very late intervention
-imgsave(paste('display_items/figure-6.',imgmode,sep=''),width=6.5*resx,height=8*resx,res=resx)
+#### FIGURE 7: V cohort - very late intervention
+imgsave(paste('display_items/figure-7.',imgmode,sep=''),width=6.5*resx,height=8*resx,res=resx)
 
 #layout_matrix = matrix(1:8, nrow=4, byrow=T)
 #layout_matrix = matrix(c(1,2,2,2,3,3,3,4,5,5,5,6,6,6,7,8,8,8,9,9,9,10,11,11,11,12,12,12),nrow=4,byrow=T)
@@ -2217,8 +2609,11 @@ for (tpt in unique(blind$timepoint[blind$expt=='V' & !is.na(blind$timepoint)])) 
     vsurv$cohort = gsub('cohort=','',names(vsurv$strata))
     vsurv$color = params$color[match(vsurv$cohort, params$cohort)]
     vsurv$lty = params$lty[match(vsurv$cohort, params$cohort)]
+    
+    zph_p(coxph(Surv(dpi, acm) ~ cohort, data=subset(v_surv, timepoint==tpt)))
 
     plot(vsurv, ann=FALSE, axes=FALSE, xlim=c(0,300), ylim=c(0,1.05), xaxs='i', yaxs='i', lwd=default_lwd, col=vsurv$color, lty=vsurv$lty)
+    add_surv_confint(vsurv)
     axis(side=1, at=-3:60*10, labels=NA, lwd=1, lwd.ticks=1, tck=-0.025)
     axis(side=1, at=0:10*50, labels=NA, lwd=0, lwd.ticks=1, tck=-0.05)
     axis(side=1, at=0:10*50, lwd=0, line=-0.5)
@@ -2248,7 +2643,6 @@ for (tpt in unique(blind$timepoint[blind$expt=='V' & !is.na(blind$timepoint)])) 
     vs2$cohort = gsub('cohort=','',names(vs2$strata))
     vs2$color = params$color[match(vs2$cohort, params$cohort)]
     vs2$lty = params$lty[match(vs2$cohort, params$cohort)]
-    
     plot(NA, NA, ann=FALSE, axes=FALSE, xlim=c(0,300), ylim=c(0,1.05), xaxs='i', yaxs='i')
     axis(side=1, at=-3:60*10, labels=NA, lwd=1, lwd.ticks=1, tck=-0.025)
     axis(side=1, at=0:10*50, labels=NA, lwd=0, lwd.ticks=1, tck=-0.05)
@@ -2273,6 +2667,7 @@ for (tpt in unique(blind$timepoint[blind$expt=='V' & !is.na(blind$timepoint)])) 
     y_pbs = prop*c(1,vs2$surv[(vs2$strata['cohort=V-156-ACTIVE6']+1):(vs2$strata['cohort=V-156-ACTIVE6']+vs2$strata['cohort=V-156-PBS'])])
     y_pbs = c(prop, rep(y_pbs, each=2))[1:12]
     lines(x_pbs, y_pbs, lwd=default_lwd, col=params$color[params$cohort=='V-156-PBS'], lty=params$lty[params$cohort=='V-156-PBS'])
+    add_surv_confint(vs2)
   }
   if (tpt==120) {
     mtext(side=3, line=1, text='mortality')
@@ -2398,9 +2793,9 @@ order by 1
 
 
 
+#### FIGURE 4: Natural history study
 
-
-imgsave(paste('display_items/figure-3.',imgmode,sep=''),width=6.5*resx,height=4.9*resx,res=resx)
+imgsave(paste('display_items/figure-4.',imgmode,sep=''),width=6.5*resx,height=4.9*resx,res=resx)
 
 layout_matrix = matrix(1:6,nrow=3,byrow=F)
 layout(layout_matrix)
@@ -2416,7 +2811,7 @@ weights = read.table(paste('data/mri/',expt,'_weights.tsv',sep=''),sep='\t',head
 behavs = read.table(paste('data/mri/',expt,'_behavs.tsv',sep=''),sep='\t',header=T,quote='',comment.char='')
 behavs_meta = read.table(paste('data/mri/',expt,'_behavs_meta.tsv',sep=''),sep='\t',header=T,quote='',comment.char='')
 
-write.table(behavs_meta, 'display_items/table-s2.tsv', sep='\t', row.names=F, col.names=T, quote=F)
+write.table(behavs_meta, 'display_items/table-s3.tsv', sep='\t', row.names=F, col.names=T, quote=F)
 
 linecol = '#AAAAAA'
 
@@ -2762,6 +3157,7 @@ sf$lty = cohorts$lty[match(sf$cohort, cohorts$cohort)]
 ylims = c(0, 1.05)
 par(mar=c(4,5,3,1))
 plot(sf, ann=FALSE, axes=FALSE, xlim=xlims, ylim=ylims, xaxs='i', yaxs='i', col=sf$color, lwd=c(3,3,3,3,3))
+add_surv_confint(sf)
 axis(side=1, at=seq(-20,200,10), labels=NA, lwd=1, lwd.ticks=1, tck=-0.025)
 axis(side=1, at=c(-7,seq(0,180,30)), labels=NA, lwd=0, lwd.ticks=1,  tck=-0.05)
 axis(side=1, at=c(-7,seq(0,180,30)), lwd=0, lwd.ticks=0, line=-0.5)
@@ -2793,8 +3189,8 @@ dev.off() #### END FIGURE 3
 
 
   
-#### FIGURE S6: some different ways of slicing and dicing figure 3
-imgsave(paste('display_items/figure-s6.',imgmode,sep=''),width=6.5*resx,height=2.3*resx,res=resx)
+#### FIGURE S5: some different ways of slicing and dicing the natural history data
+imgsave(paste('display_items/figure-s5.',imgmode,sep=''),width=6.5*resx,height=2.3*resx,res=resx)
 
 layout_matrix = matrix(1:3,nrow=1,byrow=T)
 layout(layout_matrix)
@@ -3007,7 +3403,7 @@ dev.off()
 
 
 
-# more detail on N behaviorals
+### FIGURE S4: more detail on N behaviorals
 
 expt = 'N'
 behavs = read.table(paste('data/mri/',expt,'_behavs.tsv',sep=''),sep='\t',header=T,quote='',comment.char='')
@@ -3024,7 +3420,7 @@ smry_by_obs = calculate_ci(smry_by_obs)
 smry_by_obs$col = cohorts$color[match(smry_by_obs$cohort,cohorts$cohort)]
 smry_by_obs$lty = cohorts$lty[match(smry_by_obs$cohort,cohorts$cohort)]
 
-imgsave(paste('display_items/figure-s5.',imgmode,sep=''),width=6.5*resx,height=8.5*resx,res=resx)
+imgsave(paste('display_items/figure-s4.',imgmode,sep=''),width=6.5*resx,height=8.5*resx,res=resx)
 par(mfrow=c(8,5))
 # create <= 33 character display titles where needed
 behavs_meta$observations_display = behavs_meta$observations
@@ -3055,4 +3451,98 @@ for (i in 1:nrow(behavs_meta)) {
   mtext(side=3, line=0, text=behavs_meta$observations_display[i], cex=0.5)
 }
 dev.off()
+
+
+
+
+
+
+#### Table S1: behavioral signs descriptive stats
+
+# Even though this is table S1 it comes last in the script because it takes so long - about 3 minutes on my MacBook Air
+
+behavs = read.table('data/processed/behavs.tsv',sep='\t',header=T,comment.char='')
+
+signs_meta = data.frame(phenotype=c('blank_stare', 'difficulty_righting', 'hunched_posture', 'irregular_gait_hindlimb_weakness', 
+                                    'poor_body_condition', 'reduced_activity', 'scruff_poor_grooming', 'tremor'))
+behavtime1 = sqldf("
+                   select   animal, phenotype, dpi, value, rater
+                   from     behavs
+                   where    phenotype in (select phenotype from signs_meta)
+                   and      rater !='' and length(rater) <= 3
+                   order by 1 asc, 2 asc, 3 desc
+                   ;")
+behavtime1$valueafter = 0.0
+
+last_animal = behavtime1$animal[1]
+last_phenotype = behavtime1$phenotype[1]
+runcount = 1
+runsum = behavtime1$value[1]
+for (i in 2:nrow(behavtime1)) {
+  if (i %% 1000 == 0) {
+    cat(paste0('\rOn row ',i,'...'),stderr())
+  }
+  flush.console()
+  if (behavtime1$animal[i] == last_animal & behavtime1$phenotype[i] == last_phenotype) {
+    runcount = runcount+1
+    runsum = runsum + behavtime1$value[i]
+  } else {
+    last_animal = behavtime1$animal[i]
+    last_phenotype = behavtime1$phenotype[i]
+    runcount = 1
+    runsum = behavtime1$value[i]
+  }
+  behavtime1$valueafter[i] = runsum/runcount
+}
+
+# now select earliest dpi at which the symptom was seen, AND was present in at least half of observations thereafter
+behavtime2 = sqldf("
+                   select   animal, phenotype, min(dpi) min_dpi
+                   from     behavtime1
+                   where    valueafter >= 0.5 and value = 1
+                   group by 1, 2
+                   ;")
+
+endtime1 = sqldf("
+                 select   s.animal, s.dpi
+                 from     surviv s, blind b
+                 where    s.animal = b.animal
+                 and      s.endpoint
+                 and      b.expt in ('D','G','M','Q','R','S','T','V','Z')
+                 ;")
+
+endtime2 = sqldf("
+                 select   e.animal, e.dpi, sm.phenotype
+                 from     endtime1 e, signs_meta sm -- intentional cartesian product, no join condition
+                 ;")
+
+behavtime3 = sqldf("
+                   select   e.animal, e.phenotype, e.dpi endpoint_dpi, b.min_dpi onset_dpi
+                   from     endtime2 e left outer join behavtime2 b
+                   on       e.animal = b.animal and e.phenotype = b.phenotype
+                   ;")
+
+behavtime3$lead_time = behavtime3$endpoint_dpi - behavtime3$onset_dpi
+
+behavtime4 = sqldf("
+                   select   b.expt, b.cohort, b.treatment, b.strain, t.animal, t.phenotype, t.lead_time
+                   from     behavtime3 t, blind b
+                   where    t.animal = b.animal
+                   ;")
+
+behavrank = sqldf("
+                  select   phenotype, avg(lead_time) mean_lead, stdev(lead_time) sd_lead, avg(case when lead_time >=0 then 1 else 0 end) proportion_seen, count(*) n
+                  from     behavtime4
+                  where    treatment = 'saline' and strain = 'RML'
+                  group by 1
+                  order by 2 desc
+                  ;")
+behavrank$mean_sd = paste0(formatC(behavrank$mean_lead,format='f',1), ' ± ',formatC(behavrank$sd_lead,format='f',1))
+behavrank$y = nrow(behavrank):1
+
+behavrank$percent = percent(behavrank$proportion_seen)
+behavrank$criteria = ''
+
+write.table(behavrank[,c('phenotype','criteria','mean_sd','percent')], 'display_items/table-s1.tsv', sep='\t', col.names=T, row.names=F, quote=F)
+
 
