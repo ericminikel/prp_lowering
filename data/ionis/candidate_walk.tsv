@@ -1,0 +1,8 @@
+region	name	seq	chem	start	color	bbone
+1	candidate A	TTCTATCCAAATAATCCAGA	eeeeeddddddddddeeeee	131914296	#FF7F00	sooosssssssssssooss
+1	active ASO 5	TTGCAATTCTATCCAAATAA	eeeeeddddddddddeeeee	131914302	#C21FB8	sooosssssssssssooss
+1	active ASO 2	TTGCAATTCTATCCAAA	eeeeddddddddkkeee	131914305	#09C009	soosssssssssooss
+1	candidate B	AGATTGCAATTCTATCCAAA	eeeeeddddddddddeeeee	131914305	#E6AB02	sooosssssssssssooss
+1	candidate C	AAGAGATTGCAATTCTATCC	eeeeeddddddddddeeeee	131914308	#7570B3	sooosssssssssssooss
+2	active ASO 1	CTATTTAATGTCAGTCT	eeeeddddddddkkeee	131938399	#0909FF	soosssssssssooss
+2	active ASO 6	CTTCTATTTAATGTCAGTCT	eeeeeddddddddddeeeee	131938399	#41B6C4	sooosssssssssssooss
