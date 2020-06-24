@@ -1,21 +1,21 @@
-animal	dpi	treatment
-271	239	active ASO 6
-272	120	active ASO 6
-273	243	active ASO 6
-274	246	active ASO 6
-275	131	active ASO 6
-286	277	active ASO 6
-287	256	active ASO 6
-288	256	active ASO 6
-289	256	active ASO 6
-290	251	active ASO 6
-321	153	saline
-322	160	saline
-323	137	saline
-324	166	saline
-325	163	saline
-326	171	saline
-327	162	saline
-328	160	saline
-329	171	saline
-330	164	saline
+animal	dpi	treatment	endpoint
+271	239	active ASO 6	TRUE
+272	120	active ASO 6	FALSE
+273	243	active ASO 6	TRUE
+274	246	active ASO 6	TRUE
+275	131	active ASO 6	FALSE
+286	277	active ASO 6	TRUE
+287	256	active ASO 6	TRUE
+288	256	active ASO 6	TRUE
+289	256	active ASO 6	TRUE
+290	251	active ASO 6	TRUE
+321	153	saline	TRUE
+322	160	saline	TRUE
+323	137	saline	TRUE
+324	166	saline	TRUE
+325	163	saline	TRUE
+326	171	saline	TRUE
+327	162	saline	TRUE
+328	160	saline	TRUE
+329	171	saline	TRUE
+330	164	saline	TRUE
