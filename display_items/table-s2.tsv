@@ -1,41 +1,21 @@
-category	observations	scoring
-neurological	ataxia	1: difficulty getting across cage and /or falling over
-neurological	clasping front legs	1: almost 2: full clasp
-neurological	clasping back legs	1: almost 2: full clasp
-neurological	clasping  front and back legs	1: almost 2: full clasp
-neurological	weak grip: grid, forelimb	1: weak or moderate 2: absent
-neurological	weak grip: hindlimb hang	1: moderate (fall 1 out of 2 times) 2: weak fall 2 out of 2 tries (2x)
-neurological	weak grip: bar (fall only)	1: moderate (fall 1 out of 2 times) 2: weak fall 2 out of 2 tries (2x)
-neurological	lacks righting reflex (flipped on back by tail, not contact right reflex)	1: poor: all but head will roll over when tail is twisted. 2: lacking: can't right
-neurological	circling	1: present
-neurological	paralysis	1: paresis (limited range of motion for walking only, curled paw may be present, one limb non-weight bearing) 2: paralysis (cannot move)
-neurological	lacks balance on edge of cage	1: present
-neurological	head-bobbing	1: present
-neurological	blank stare	1: present at initial box evaluation
-neurological	convulsions	1: present
-neurological	head tilt	1: present
-neurological	kyphosis	1: slight to moderate 2: severe
-non-neurological	dehydrated	1: present when nape pinched and/or sunken eyes
-non-neurological	lethargic	1: present (immobile even after poked by finger)
-non-neurological	moribund	1: present (near death)
-non-neurological	hunched	1: present, not kyphosis, front and hind feet are close together when standing, not applicable to resting posture
-shirpa	abnormal gait	1: wobble due to wide hind limb stance
-shirpa	abnormal posture	1: present
-shirpa	abnormal activity level: slow	1: present in home box only 2: no exploring in test box
-shirpa	abnormal activity level: excited	1: moderate (noticed in home box or behavior box) 2: severe, may include jumping
-shirpa	tail suspension: poor or no splay	1: poor 2: none or abnormally wide
-shirpa	abnormal landing from drop	1: falls on tail or back from bar only (not drop from tail suspension)
-shirpa	abnormal tail elevation	1: present
-shirpa	abnormal pelvic elevation: high	1: present
-shirpa	abnormal pelvic elevation: low	1: present
-shirpa	increased vocalization	1: present
-shirpa	lacks righting reflex	1: lacking
-shirpa	doesn't see bar	1: present
-shirpa	doesn't reach for bar	1: present
-shirpa	no balance on bar	1: moderate: can balance after multiple tries or can only balance a second or two. 2: cannot balance
-shirpa	no reaction to toe pinch	1: flinch 2: no reaction (zero: pulls paw away immediately)
-shirpa	no leg resistance	1: doesn't react to pressure against paws (zero if any paw pushes back)
-shirpa	no bite reflex	1: poor: notices but doesn't bite 2: no reaction (normal is immediate bite)
-shirpa	delayed hot plate response >5sec	1: longer than 5 seconds
-shirpa	neophobia (freezing)	1: any episode of freezing in test box (vs home box) 2: paralyzing fear
-shirpa	bladder	0: not palpable (np) or good abdominal tone (gt), 1: small or medium 2: large or huge.
+roworder	expt	is_control	disp	mean_sd	n	delta
+1	M	1	saline	150.7 ± 5.5	9	0%
+1	M	0	control ASO 4	157.9 ± 4.9	10	+5%
+1	M	0	active ASO 6	276.8 ± 11.6	9	+84%
+1	M	0	active ASO 5	304.8 ± 19.9	6	+102%
+2	P	1	saline	161.7 ± 7.0	9	0%
+2	P	0	active ASO 5	139.5 ± 5.3	4	-14%
+2	P	0	control ASO 4	160.2 ± 11.0	9	-1%
+2	P	0	active ASO 6	275.2 ± 3.2	8	+70%
+3	D	1	0	152.0 ± 5.3	8	0%
+3	D	0	30	173.6 ± 7.7	7	+14%
+3	D	0	100	194.0 ± 6.7	6	+28%
+3	D	0	300	207.2 ± 4.3	6	+36%
+3	D	0	500	226.4 ± 14.7	7	+49%
+4	N	0	RML	164.8 ± 9.6	12	-
+5	C	1	saline	160.7 ± 9.9	10	0%
+5	C	0	active ASO 6	253.0 ± 11.7	8	+57%
+6	B	1	saline	156.2 ± 12.1	8	0%
+6	B	0	control ASO 3	155.7 ± 9.8	3	0%
+6	B	0	active ASO 2	189.0	1	+21%
+6	B	0	active ASO 1	234.7 ± 18.1	7	+50%
