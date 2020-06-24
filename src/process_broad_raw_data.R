@@ -1,5 +1,5 @@
 options(stringsAsFactors=FALSE)
-setwd('~/d/sci/src/determinants/')
+setwd('~/d/sci/src/prp_lowering/')
 library(sqldf)
 library(reshape2)
 
@@ -162,6 +162,8 @@ order by 1, 2, 3, 4
 
 behavs_all = rbind(behavs_all, behavs_cleaned[,c('animal','dpi','phenotype','value','rater')])
 
+# handle unspecified raters (blank and dates filled in instead of initials)
+behavs_all$rater[nchar(behavs_all$rater) == 0 | nchar(behavs_all$rater) == 10] = 'unknown'
 # behavs_all = read.table('data/processed/behavs.tsv',sep='\t',header=T)
 
 write.table(behavs_all,'data/processed/behavs.tsv',sep='\t',row.names=F,col.names=T,quote=F)
@@ -287,6 +289,10 @@ master$animal = master$animal_no
 master = subset(master, nchar(animal_no) <= 3) # remove the "practice" animals without cage letters assigned. CC numbers are longer.
 survival = rbind(survival, master[,c('animal','dpi','endpoint','endpoint_comments','acm','acm_comments','tissues')])
 
+# bug fix in response to reviewer #3 - 2020-06-11
+# for analyses restricted to animals reaching pre-specified euthanasia endpoint, "found dead" should be excluded
+survival$endpoint[survival$endpoint_comments=='found dead'] = F
+
 write.table(survival, 'data/processed/survival.tsv', sep='\t', col.names=T, row.names=F, quote=F)
 
 # table(survival$endpoint_comments)
@@ -340,6 +346,11 @@ write.table(surgery, 'data/processed/surgery.tsv', sep='\t', row.names=F, col.na
 blind = read.table('data/raw/blind.tsv', sep='\t', header=T)
 blind = blind[blind$expt != 'HK',] 
 
+
+g_cohort_sex = read.table('data/raw/G_sex.tsv',sep='\t',header=T)
+blind$sex = g_cohort_sex$sex[match(blind$animal, g_cohort_sex$animal)]
+blind$sex[is.na(blind$sex)] = 'f'
+
 # export cohort list for annotation
 # sqldf("select expt, cohort, count(*) n from blind group by 1, 2 order by 1, 2;")
 
@@ -361,7 +372,7 @@ blind$color   =   cohort_params$color[match(blind$cohort, cohort_params$cohort)]
 blind$lty     =     cohort_params$lty[match(blind$cohort, cohort_params$cohort)]
 blind$x       =       cohort_params$x[match(blind$cohort, cohort_params$cohort)]
 
-blind_output = blind[,c('expt','cohort_alias','animal','cage','strain','treatment','dose','timepoint','display','color','lty','x')]
+blind_output = blind[,c('expt','cohort_alias','animal','sex','cage','strain','treatment','dose','timepoint','display','color','lty','x')]
 colnames(blind_output)[2] = 'cohort'
 
 write.table(blind_output, 'data/processed/blind.tsv', sep='\t', col.names=T, row.names=F, quote=F)
