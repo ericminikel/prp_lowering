@@ -343,7 +343,7 @@ for (i in 1:nrow(candidates)) {
 
 
 prnp_enst = 'ENSMUST00000091288.12'
-prnp_anno = read.table('data/misc/ENSMUST00000091288.csv',sep='\t',header=T)
+prnp_anno = read.table('data/misc/ENSMUST00000091288.tsv',sep='\t',header=T)
 xlims = c(floor(min(prnp_anno$start/1e3)-9)*1e3, ceiling(max(prnp_anno$end/1e3)+11)*1e3)
 xats = seq(floor(min(prnp_anno$start/1e4)-1)*1e4, ceiling(max(prnp_anno$end/1e4)+1)*1e4, 1e4)
 xats_small = seq(min(xlims), max(xlims), 1e3)
